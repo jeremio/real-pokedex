@@ -2,11 +2,11 @@
   <main class="pokedex">
     <PokedexLeft>
       <WindowTemplate class="pokedex__left-window" @click="handleOpenHelper">
-        <Toast v-if="isToastVisible" v-bind="toastProps.header" />
+        <Toast v-if="isToastVisible && toastProps?.header" v-bind="toastProps.header" />
         <KeepAlive>
           <component :is="mainViewComponent" />
         </KeepAlive>
-        <Toast v-if="isToastVisible" v-bind="toastProps.footer" />
+        <Toast v-if="isToastVisible && toastProps?.footer" v-bind="toastProps.footer" />
       </WindowTemplate>
       <LeftControls />
     </PokedexLeft>
@@ -121,7 +121,7 @@ const toastProps = computed(() => {
     POKEMON: {
       header: {
         isHeader: true,
-        copy: activePokemonName.value,
+        copy: activePokemonName.value || 'Pokemon', // Fallback pour éviter undefined
       },
       footer: {
         isHeader: false,
