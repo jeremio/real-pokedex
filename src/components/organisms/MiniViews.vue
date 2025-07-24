@@ -1,22 +1,22 @@
 <template>
   <section class="mini-views">
     <section class="mini-views__windows">
-      <Window variant="sm">
+      <WindowTemplate variant="sm">
         <p class="mini-views__copy">
           {{ copy?.left }}
         </p>
-      </Window>
-      <Window variant="sm">
+      </WindowTemplate>
+      <WindowTemplate variant="sm">
         <p class="mini-views__copy">
           {{ copy?.right }}
         </p>
-      </Window>
+      </WindowTemplate>
     </section>
   </section>
 </template>
 
 <script setup lang="ts">
-import Window from '@/components/templates/Window.vue'
+import WindowTemplate from '@/components/templates/WindowTemplate.vue'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 

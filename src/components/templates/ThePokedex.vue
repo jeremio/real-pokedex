@@ -1,19 +1,19 @@
 <template>
   <main class="pokedex">
     <PokedexLeft>
-      <Window class="pokedex__left-window" @click="handleOpenHelper">
+      <WindowTemplate class="pokedex__left-window" @click="handleOpenHelper">
         <Toast v-if="isToastVisible" v-bind="toastProps.header" />
         <KeepAlive>
           <component :is="mainViewComponent" />
         </KeepAlive>
         <Toast v-if="isToastVisible" v-bind="toastProps.footer" />
-      </Window>
+      </WindowTemplate>
       <LeftControls />
     </PokedexLeft>
     <PokedexRight>
-      <Window variant="md" class="pokedex__right-window" @click="handleOpenHelper">
+      <WindowTemplate variant="md" class="pokedex__right-window" @click="handleOpenHelper">
         <component :is="secondaryViewComponent" v-bind="secondaryViewProps" />
-      </Window>
+      </WindowTemplate>
       <RightControls />
       <MiniViews />
     </PokedexRight>
@@ -27,7 +27,7 @@ import RightControls from '@/components/molecules/RightControls.vue'
 import MiniViews from '@/components/organisms/MiniViews.vue'
 import PokedexLeft from '@/components/templates/PokedexLeft.vue'
 import PokedexRight from '@/components/templates/PokedexRight.vue'
-import Window from '@/components/templates/Window.vue'
+import WindowTemplate from '@/components/templates/WindowTemplate.vue'
 import BaseDetails from '@/components/views/BaseDetails.vue'
 import BaseStats from '@/components/views/BaseStats.vue'
 import CreditThanks from '@/components/views/CreditThanks.vue'
