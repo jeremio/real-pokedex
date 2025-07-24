@@ -15,7 +15,7 @@
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"
       />
-      <linearGradient v-for="theType in statTypes" :key="`linear-gradient--${theType}`" :id="`gradient-${theType}`">
+      <linearGradient v-for="theType in statTypes" :id="`gradient-${theType}`" :key="`linear-gradient--${theType}`">
         <stop :class="`stop1-${theType}`" offset="0%" />
         <stop :class="`stop2-${theType}`" offset="100%" />
       </linearGradient>
@@ -28,19 +28,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+const props = defineProps<{ max: number, base: number, label: string }>()
 
-const statTypes = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
-
-const props = defineProps<{ max: number; base: number; label: string }>();
+const statTypes = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed']
 
 const percent = computed(() => {
-  return Math.floor((props.base * 100) / props.max);
-});
+  return Math.floor((props.base * 100) / props.max)
+})
 
 const statLabel = computed(
-  () => ({ 'special-attack': 'sp. atk', 'special-defense': 'sp. def' }[props.label] || props.label)
-);
+  () => ({ 'special-attack': 'sp. atk', 'special-defense': 'sp. def' }[props.label] || props.label),
+)
 </script>
 
 <style scoped lang="scss">

@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-type Variant = 'a' | 'b' | 'x' | 'y' | 'up' | 'down' | 'left' | 'right';
-defineProps<{ variant: Variant; isActive?: boolean }>();
+type Variant = 'a' | 'b' | 'x' | 'y' | 'up' | 'down' | 'left' | 'right'
+defineProps<{ variant: Variant, isActive?: boolean }>()
 </script>
 
 <style scoped lang="scss">

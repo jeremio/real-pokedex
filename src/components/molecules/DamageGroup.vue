@@ -3,9 +3,9 @@
     <h4>{{ groupLabel }} {{ relation }}</h4>
     <div class="damage-group__groups">
       <TypePill
-        class="damage-group__item"
         v-for="item in types"
         :key="`damage-group--${item}`"
+        class="damage-group__item"
         mode="default"
         :type="item"
       />
@@ -14,15 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import TypePill from '@/components/atoms/TypePill.vue'
 
 const props = defineProps<{
-  group: string;
-  types: string[];
-  relation: string;
-}>();
+  group: string
+  types: string[]
+  relation: string
+}>()
 
-const groupLabel = computed(() => (props.group === 'double' ? '2x DMG' : '1/2 DMG'));
+const groupLabel = computed(() => (props.group === 'double' ? '2x DMG' : '1/2 DMG'))
 </script>
 
 <style scoped lang="scss">

@@ -1,122 +1,130 @@
 <template>
   <FrostCard class="key-map" :class="{ 'key-map--open': isOpen }">
     <div class="key-map__header" @click="isOpen = !isOpen">
-      <h4 class="key-map__title">Keyboard Controls</h4>
+      <h4 class="key-map__title">
+        Keyboard Controls
+      </h4>
       <button class="key-map__toggle">
         {{ isOpen ? '−' : '+' }}
       </button>
     </div>
     <div class="key-map__content">
-      <div class="key-map__legend" v-for="(item, index) in buttons" :key="`key-map--${index}`">
-        <p class="key-map__key">{{ item.correspondingKey }}</p>
+      <div v-for="(item, index) in buttons" :key="`key-map--${index}`" class="key-map__legend">
+        <p class="key-map__key">
+          {{ item.correspondingKey }}
+        </p>
         <p>=</p>
-        <component class="key-map__button" :is="item.component" v-bind="item.props" />
+        <component :is="item.component" class="key-map__button" v-bind="item.props" />
       </div>
     </div>
   </FrostCard>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-const isOpen = ref(false);
+import BlueButton from '@/components/atoms/BlueButton.vue'
+import DpadButton from '@/components/atoms/DpadButton.vue'
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import PowerButton from '@/components/atoms/PowerButton.vue'
+
+const isOpen = ref(false)
 
 const buttons = [
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'up' },
-    correspondingKey: '↑'
+    correspondingKey: '↑',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'down' },
-    correspondingKey: '↓'
+    correspondingKey: '↓',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'left' },
-    correspondingKey: '←'
+    correspondingKey: '←',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'right' },
-    correspondingKey: '→'
+    correspondingKey: '→',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'y' },
-    correspondingKey: 'a'
+    correspondingKey: 'a',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'x' },
-    correspondingKey: 's'
+    correspondingKey: 's',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'b' },
-    correspondingKey: 'z'
+    correspondingKey: 'z',
   },
   {
-    component: 'DpadButton',
+    component: DpadButton,
     props: { variant: 'a' },
-    correspondingKey: 'x'
+    correspondingKey: 'x',
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 1 },
-    correspondingKey: 1
+    correspondingKey: 1,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 2 },
-    correspondingKey: 2
+    correspondingKey: 2,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 3 },
-    correspondingKey: 3
+    correspondingKey: 3,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 4 },
-    correspondingKey: 4
+    correspondingKey: 4,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 5 },
-    correspondingKey: 5
+    correspondingKey: 5,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 6 },
-    correspondingKey: 6
+    correspondingKey: 6,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 7 },
-    correspondingKey: 7
+    correspondingKey: 7,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 8 },
-    correspondingKey: 8
+    correspondingKey: 8,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 9 },
-    correspondingKey: 9
+    correspondingKey: 9,
   },
   {
-    component: 'BlueButton',
+    component: BlueButton,
     props: { copy: 10 },
-    correspondingKey: 0
+    correspondingKey: 0,
   },
   {
-    component: 'PowerButton',
+    component: PowerButton,
     props: null,
-    correspondingKey: 'p'
-  }
-];
+    correspondingKey: 'p',
+  },
+]
 </script>
 
 <style scoped lang="scss">

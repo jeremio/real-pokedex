@@ -6,7 +6,7 @@
       class="pokemon-wild__pokeball"
       src="@/assets/images/pokeball-pokemon.gif"
       :alt="`${activePokemonName} sprite`"
-    />
+    >
     <img
       v-show="!isImgLoading"
       class="pokemon-wild__pokemon"
@@ -14,60 +14,59 @@
       :src="spriteImage"
       :alt="`${activePokemonName} sprite`"
       @load="handleImgLoaded"
-    />
+    >
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue';
-import { storeToRefs } from 'pinia';
-import { usePokeStore } from '@/store/pokemon';
-import { useControlsStore } from '@/store/controls';
+import { useControlsStore } from '@/store/controls.ts'
+import { usePokeStore } from '@/store/pokemon.ts'
 
-const pokeStore = usePokeStore();
-const controlStore = useControlsStore();
+const pokeStore = usePokeStore()
+const controlStore = useControlsStore()
 
-const { activeSpriteSetting } = storeToRefs(controlStore);
-const { activePokemonPayload, activePokemonName, activePokemonSprites, activePokemonType, activePokemonHeight } =
-  storeToRefs(pokeStore);
+const { activeSpriteSetting } = storeToRefs(controlStore)
+const { activePokemonPayload, activePokemonName, activePokemonSprites, activePokemonType, activePokemonHeight }
+  = storeToRefs(pokeStore)
 
-const { getActivePokemon } = pokeStore;
+const { getActivePokemon } = pokeStore
 
-const isImgLoading = ref(false);
+const isImgLoading = ref(false)
 
 /**
  * Returns the sprite image for the active Pokemon based on the active sprite setting.
  * @return {string|null} - The URL of the sprite image, or null if the active Pokemon sprites are not available.
  */
 const spriteImage = computed(() => {
-  if (!activePokemonSprites.value) return null;
+  if (!activePokemonSprites.value)
+    return null
 
-  const sprites = activePokemonSprites.value;
-  const { isAnimated, isShiny, isFront } = activeSpriteSetting.value;
+  const sprites = activePokemonSprites.value
+  const { isAnimated, isShiny, isFront } = activeSpriteSetting.value
 
-  const type = isAnimated ? 'animated' : 'artwork';
-  const shiny = isShiny ? 'Shiny' : '';
-  const availableType = sprites[`${type}${shiny}`].front ? `${type}${shiny}` : `artwork${shiny}`;
+  const type = isAnimated ? 'animated' : 'artwork'
+  const shiny = isShiny ? 'Shiny' : ''
+  const availableType = sprites[`${type}${shiny}`].front ? `${type}${shiny}` : `artwork${shiny}`
 
-  const availableOrientation = isFront ? 'front' : sprites[availableType].back ? 'back' : 'front';
+  const availableOrientation = isFront ? 'front' : sprites[availableType].back ? 'back' : 'front'
 
-  return sprites[availableType][availableOrientation];
-});
+  return sprites[availableType][availableOrientation]
+})
 
 const pokemonHeight = computed(() => {
-  const baseHeight = 70;
-  const ratio = 8;
-  return `${activePokemonHeight.value * ratio + baseHeight}px`;
-});
+  const baseHeight = 70
+  const ratio = 8
+  return `${activePokemonHeight.value * ratio + baseHeight}px`
+})
 
 function handleImgLoaded() {
-  setTimeout(() => (isImgLoading.value = false), 500);
+  setTimeout(() => (isImgLoading.value = false), 500)
 }
 
 watchEffect(async () => {
-  isImgLoading.value = true;
-  await getActivePokemon(activePokemonPayload.value);
-});
+  isImgLoading.value = true
+  await getActivePokemon(activePokemonPayload.value)
+})
 </script>
 
 <style scoped lang="scss">

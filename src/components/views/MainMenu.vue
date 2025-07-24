@@ -1,6 +1,6 @@
 <template>
   <section class="main-menu">
-    <img class="main-menu__logo" src="../../assets/images/Pokedex_logo.png" alt="Pokedex logo" />
+    <img class="main-menu__logo" src="../../assets/images/Pokedex_logo.png" alt="Pokedex logo">
     <div class="main-menu__options">
       <FrostCard v-for="option in menuOptions" :key="`menu-option__${option.label}`">
         <div class="main-menu__option" :class="{ 'main-menu__option--active': menuPosition === option.id }">
@@ -13,7 +13,7 @@
               width="50px"
               :src="(src as string)"
               :alt="alt"
-            />
+            >
           </div>
         </div>
       </FrostCard>
@@ -22,16 +22,16 @@
 </template>
 
 <script setup lang="ts">
-import { useControlsStore } from '@/store/controls';
-import { storeToRefs } from 'pinia';
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import { useControlsStore } from '@/store/controls.ts'
 
-const controlsStore = useControlsStore();
-const { menuPosition } = storeToRefs(controlsStore);
+const controlsStore = useControlsStore()
+const { menuPosition } = storeToRefs(controlsStore)
 
-const meUrl = new URL('/src/assets/images/BonzaiYoshProfessor.png', import.meta.url);
-const ashUrl = new URL('/src/assets/images/ashketchum.png', import.meta.url);
-const brockUrl = new URL('/src/assets/images/brock.png', import.meta.url);
-const mistyUrl = new URL('/src/assets/images/misty.png', import.meta.url);
+const meUrl = new URL('/src/assets/images/BonzaiYoshProfessor.png', import.meta.url)
+const ashUrl = new URL('/src/assets/images/ashketchum.png', import.meta.url)
+const brockUrl = new URL('/src/assets/images/brock.png', import.meta.url)
+const mistyUrl = new URL('/src/assets/images/misty.png', import.meta.url)
 
 const menuOptions = [
   {
@@ -40,17 +40,17 @@ const menuOptions = [
     sprites: [
       {
         src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/25.png',
-        alt: 'pikachu'
+        alt: 'pikachu',
       },
       {
         src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/216.png',
-        alt: 'Teddiursa'
+        alt: 'Teddiursa',
       },
       {
         src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/813.png',
-        alt: 'Piplup'
-      }
-    ]
+        alt: 'Piplup',
+      },
+    ],
   },
   {
     id: 1,
@@ -58,17 +58,17 @@ const menuOptions = [
     sprites: [
       {
         src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/1.png',
-        alt: 'Bulbasaur'
+        alt: 'Bulbasaur',
       },
       {
         src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/4.png',
-        alt: 'Charmander'
+        alt: 'Charmander',
       },
       {
         src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/7.png',
-        alt: 'Squirtle'
-      }
-    ]
+        alt: 'Squirtle',
+      },
+    ],
   },
   {
     id: 2,
@@ -76,9 +76,9 @@ const menuOptions = [
     sprites: [
       {
         src: meUrl,
-        alt: 'Bonzai Yosh'
-      }
-    ]
+        alt: 'Bonzai Yosh',
+      },
+    ],
   },
   {
     id: 3,
@@ -86,19 +86,19 @@ const menuOptions = [
     sprites: [
       {
         src: ashUrl,
-        alt: 'Ask Ketchum'
+        alt: 'Ask Ketchum',
       },
       {
         src: mistyUrl,
-        alt: 'Misty'
+        alt: 'Misty',
       },
       {
         src: brockUrl,
-        alt: 'Brock'
-      }
-    ]
-  }
-];
+        alt: 'Brock',
+      },
+    ],
+  },
+]
 </script>
 
 <style scoped lang="scss">

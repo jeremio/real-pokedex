@@ -1,10 +1,16 @@
 <template>
   <FrostCard>
     <div class="error-card">
-      <p class="error-card__msg">We're sorry, we are having some trouble fetching your data 🙁</p>
+      <p class="error-card__msg">
+        We're sorry, we are having some trouble fetching your data 🙁
+      </p>
     </div>
   </FrostCard>
 </template>
+
+<script setup lang="ts">
+import FrostCard from '@/components/atoms/FrostCard.vue'
+</script>
 
 <style scoped lang="scss">
 .error-card {

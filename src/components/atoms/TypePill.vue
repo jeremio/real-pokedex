@@ -8,8 +8,10 @@
 </template>
 
 <script setup lang="ts">
-// correct type type
-defineProps<{ type: string }>();
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import Icon from '@/components/atoms/Icon.vue'
+
+defineProps<{ type: string }>()
 </script>
 
 <style scoped lang="scss">

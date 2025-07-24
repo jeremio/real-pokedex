@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 withDefaults(defineProps<{ isPlus?: boolean }>(), {
-  isPlus: false
-});
+  isPlus: false,
+})
 </script>
 
 <style scoped lang="scss">

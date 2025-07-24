@@ -9,8 +9,12 @@
             <p class="poke-moves__move-name">
               {{ move.name }}
             </p>
-            <p v-if="filterBy === 'level-up'">lvl. {{ move.levelLearnedAt }}</p>
-            <p v-else style="text-transform: uppercase">{{ move.machineLearnedBy }}</p>
+            <p v-if="filterBy === 'level-up'">
+              lvl. {{ move.levelLearnedAt }}
+            </p>
+            <p v-else style="text-transform: uppercase">
+              {{ move.machineLearnedBy }}
+            </p>
             <p>{{ move.damageClass }}</p>
             <p style="display: flex; alignitems: center; gap: 4px">
               {{ move.power }}
@@ -24,18 +28,23 @@
 </template>
 
 <script setup lang="ts">
-import { usePokeStore } from '@/store/pokemon';
-import { storeToRefs } from 'pinia';
-import { ref, watchEffect, computed } from 'vue';
-import PokeAPI, { type IMove, type IPokemonMove } from 'pokeapi-typescript';
-import { useLoading } from '@/composables/useLoading';
+import type { IMove, IPokemonMove } from 'pokeapi-typescript'
+import PokeAPI from 'pokeapi-typescript'
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import Icon from '@/components/atoms/Icon.vue'
 
-import { useControlsStore } from '@/store/controls';
+import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
+import { useLoading } from '@/composables/useLoading.ts'
+import { useControlsStore } from '@/store/controls.ts'
+import { usePokeStore } from '@/store/pokemon.ts'
 
-const controlsStore = useControlsStore();
-const { isYoshView } = storeToRefs(controlsStore);
+const props = defineProps<{
+  filterBy: 'level-up' | 'machine'
+}>()
+const controlsStore = useControlsStore()
+const { isYoshView } = storeToRefs(controlsStore)
 
-const { isLoading, executeFn } = useLoading(getMoves);
+const { isLoading, executeFn } = useLoading(getMoves)
 
 const yoshMoves = {
   'level-up': [
@@ -45,7 +54,7 @@ const yoshMoves = {
       levelLearnedAt: 20,
       damageClass: 'status',
       machineLearnedBy: '',
-      power: 0
+      power: 0,
     },
     {
       name: 'Workout',
@@ -53,7 +62,7 @@ const yoshMoves = {
       levelLearnedAt: 21,
       damageClass: 'physical',
       machineLearnedBy: '',
-      power: 60
+      power: 60,
     },
     {
       name: 'Pay bills',
@@ -61,7 +70,7 @@ const yoshMoves = {
       levelLearnedAt: 18,
       damageClass: 'status',
       machineLearnedBy: '',
-      power: 0
+      power: 0,
     },
     {
       name: 'Repot Plant',
@@ -69,7 +78,7 @@ const yoshMoves = {
       levelLearnedAt: 27,
       damageClass: 'physical',
       machineLearnedBy: '',
-      power: 75
+      power: 75,
     },
     {
       name: 'Inner Chi',
@@ -77,7 +86,7 @@ const yoshMoves = {
       levelLearnedAt: 29,
       damageClass: 'status',
       machineLearnedBy: '',
-      power: 0
+      power: 0,
     },
     {
       name: 'Reset Desk',
@@ -85,7 +94,7 @@ const yoshMoves = {
       levelLearnedAt: 30,
       damageClass: 'physical',
       machineLearnedBy: '',
-      power: 60
+      power: 60,
     },
     {
       name: 'daddy time',
@@ -93,17 +102,17 @@ const yoshMoves = {
       levelLearnedAt: 34,
       damageClass: 'physical',
       machineLearnedBy: '',
-      power: 100
-    }
+      power: 100,
+    },
   ],
-  machine: [
+  'machine': [
     {
       name: 'readable code',
       type: 'fairy',
       levelLearnedAt: 0,
       damageClass: 'physical',
       machineLearnedBy: 'js01',
-      power: 90
+      power: 90,
     },
     {
       name: 'organized sass',
@@ -111,7 +120,7 @@ const yoshMoves = {
       levelLearnedAt: 0,
       damageClass: 'status',
       machineLearnedBy: 'scss',
-      power: 0
+      power: 0,
     },
     {
       name: 'Semantic html',
@@ -119,7 +128,7 @@ const yoshMoves = {
       levelLearnedAt: 0,
       damageClass: 'physical',
       machineLearnedBy: 'html',
-      power: 100
+      power: 100,
     },
     {
       name: 'script setup',
@@ -127,7 +136,7 @@ const yoshMoves = {
       levelLearnedAt: 0,
       damageClass: 'physical',
       machineLearnedBy: 'vue3',
-      power: 100
+      power: 100,
     },
     {
       name: 'cool app',
@@ -135,7 +144,7 @@ const yoshMoves = {
       levelLearnedAt: 0,
       damageClass: 'physical',
       machineLearnedBy: 'js02',
-      power: 100
+      power: 100,
     },
     {
       name: 'mentor',
@@ -143,7 +152,7 @@ const yoshMoves = {
       levelLearnedAt: 0,
       damageClass: 'status',
       machineLearnedBy: 'dm01',
-      power: 0
+      power: 0,
     },
     {
       name: 'documentation',
@@ -151,79 +160,77 @@ const yoshMoves = {
       levelLearnedAt: 0,
       damageClass: 'physical',
       machineLearnedBy: 'js04',
-      power: 100
+      power: 100,
     },
-  ]
-};
+  ],
+}
 
-interface IPokeMove extends IMove {
-  levelLearnedAt: number;
-  machineLearnedBy: string;
+interface IPokeMove extends Move {
+  levelLearnedAt: number
+  machineLearnedBy: string
 }
 
 interface IMoveListItem {
-  name: string;
-  type: string;
-  levelLearnedAt: number;
-  damageClass: string;
-  machineLearnedBy: string;
-  power: number;
+  name: string
+  type: string
+  levelLearnedAt: number
+  damageClass: string
+  machineLearnedBy: string
+  power: number
 }
 
-const props = defineProps<{
-  filterBy: 'level-up' | 'machine';
-}>();
+const pokeStore = usePokeStore()
+const movesList = ref<IMoveListItem[]>()
 
-const pokeStore = usePokeStore();
-const movesList = ref<IMoveListItem[]>();
-
-const { activePokemonMoves } = storeToRefs(pokeStore);
+const { activePokemonMoves } = storeToRefs(pokeStore)
 
 const hasMoves = computed(() => {
-  return isYoshView.value || (!isLoading.value && movesList.value?.length);
-});
+  return isYoshView.value || (!isLoading.value && movesList.value?.length)
+})
 
 function filterActivePokemonMoves(moves: IPokemonMove[], filterBy: string) {
-  return moves.filter((move) => move.version_group_details[0].move_learn_method.name === filterBy);
+  return moves.filter(move => move.version_group_details[0].move_learn_method.name === filterBy)
 }
 
 async function getMachineLearnedBy({ machines }: IMove): Promise<string> {
-  if (!machines.length) return '';
+  if (!machines.length)
+    return ''
   // todo: filter by current generation
-  const urlSplit = machines[0].machine.url.split('/');
+  const urlSplit = machines[0].machine.url.split('/')
   // we know the id is in this position because the url is always structured the same
-  const payload = Number(urlSplit[6]);
-  let machine = '';
+  const payload = Number(urlSplit[6])
+  let machine = ''
   try {
-    machine = (await PokeAPI.Machine.resolve(payload)).item.name;
-  } catch (e) {
-    console.log({ e });
+    machine = (await PokeAPI.Machine.resolve(payload)).item.name
   }
-  return machine;
+  catch (e) {
+    console.log({ e })
+  }
+  return machine
 }
 
 async function getMove({ move, version_group_details }: IPokemonMove) {
-  const levelLearnedAt = version_group_details[0]?.level_learned_at || 0;
+  const levelLearnedAt = version_group_details[0]?.level_learned_at || 0
   return await PokeAPI.Move.resolve(move.name)
     .then(async (res) => {
-      const machineLearnedBy = await getMachineLearnedBy(res);
-      return { ...res, levelLearnedAt, machineLearnedBy };
+      const machineLearnedBy = await getMachineLearnedBy(res)
+      return { ...res, levelLearnedAt, machineLearnedBy }
     })
     .catch((e) => {
-      console.log({ e });
-      return null;
-    });
+      console.log({ e })
+      return null
+    })
 }
 
 function transformMoves(moves: IPokeMove[]) {
-  return moves.map((move) => ({
+  return moves.map(move => ({
     name: move.name.replace('-', ' '),
     type: move.type.name,
     levelLearnedAt: move.levelLearnedAt,
     damageClass: move.damage_class.name,
     machineLearnedBy: move.machineLearnedBy,
-    power: move?.power || 0
-  }));
+    power: move?.power || 0,
+  }))
 }
 
 function sortMoves(moves: IPokeMove[], filterBy: string) {
@@ -231,32 +238,37 @@ function sortMoves(moves: IPokeMove[], filterBy: string) {
     .filter(Boolean)
     .sort((a, b) => {
       if (filterBy === 'machine') {
-        return a.machineLearnedBy > b.machineLearnedBy ? 1 : -1;
-      } else {
-        return a.levelLearnedAt - b.levelLearnedAt;
+        return a.machineLearnedBy > b.machineLearnedBy ? 1 : -1
+      }
+      else {
+        return a.levelLearnedAt - b.levelLearnedAt
       }
     })
-    .slice(0, 7);
+    .slice(0, 7)
 }
 
 async function getMoves(pokemonMoves: IPokemonMove[], filterBy: string) {
-  if (!pokemonMoves?.length) return;
-  else
+  if (!pokemonMoves?.length) {
+  }
+  else {
     try {
-      const filteredMoves = filterActivePokemonMoves(pokemonMoves, filterBy);
-      const moves = await Promise.all(filteredMoves.map(async (move) => await getMove(move)));
-      const sortedMoves = sortMoves(moves as IPokeMove[], filterBy);
-      const transformedMoves = transformMoves(sortedMoves);
-      movesList.value = transformedMoves;
-    } catch (e) {
-      console.log({ e });
+      const filteredMoves = filterActivePokemonMoves(pokemonMoves, filterBy)
+      const moves = await Promise.all(filteredMoves.map(async move => await getMove(move)))
+      const sortedMoves = sortMoves(moves as IPokeMove[], filterBy)
+      const transformedMoves = transformMoves(sortedMoves)
+      movesList.value = transformedMoves
     }
+    catch (e) {
+      console.log({ e })
+    }
+  }
 }
 
 watchEffect(() => {
-  if (isYoshView.value) movesList.value = yoshMoves[props.filterBy];
-  else executeFn(activePokemonMoves.value, props.filterBy);
-});
+  if (isYoshView.value)
+    movesList.value = yoshMoves[props.filterBy]
+  else executeFn(activePokemonMoves.value, props.filterBy)
+})
 </script>
 
 <style scoped lang="scss">

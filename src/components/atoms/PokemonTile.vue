@@ -3,16 +3,16 @@
     class="pokemon-tile"
     :class="[
       {
-        'pokemon-tile--active': isActive
+        'pokemon-tile--active': isActive,
       },
-      `pokemon-tile--${pokemonType}`
+      `pokemon-tile--${pokemonType}`,
     ]"
   >
     <div
       class="pokemon-tile__image-container"
       :class="{
         'pokemon-tile__image-container--loading': isLoading,
-        'pokemon-tile__image-container--shrink': isPokemonTooBig
+        'pokemon-tile__image-container--shrink': isPokemonTooBig,
       }"
     >
       <img
@@ -20,9 +20,9 @@
         :src="gifImage"
         alt="gif image"
         class="pokemon-tile__gif"
-        @load="handleLoadedImage"
         loading="lazy"
-      />
+        @load="handleLoadedImage"
+      >
       <img
         v-show="!isGifVisible"
         :src="spriteImage"
@@ -31,54 +31,53 @@
         :class="{ 'pokemon-tile__sprite--backup-active': isActive && !gifImage }"
         height="64px"
         width="64px"
-        @load="handleLoadedImage"
         loading="lazy"
-      />
+        @load="handleLoadedImage"
+      >
     </div>
     <span class="pokemon-tile__name">{{ name }}</span>
   </article>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import PokeAPI from 'pokeapi-typescript';
-import type { IPokemonUpdated } from '@/types';
+import type { IPokemonUpdated } from '@/types'
+import PokeAPI from 'pokeapi-typescript'
 
 interface IPokemonTile {
-  name: string;
-  isActive: boolean;
-  genNum: number;
-  id: number;
+  name: string
+  isActive: boolean
+  genNum: number
+  id: number
 }
 
-const props = defineProps<IPokemonTile>();
-const pokemon = ref<IPokemonUpdated>();
-const isLoading = ref(false);
+const props = defineProps<IPokemonTile>()
+const pokemon = ref<IPokemonUpdated>()
+const isLoading = ref(false)
 
 const isGifVisible = computed(() => {
-  return props.isActive && gifImage.value;
-});
+  return props.isActive && gifImage.value
+})
 const spriteImage = computed(
-  () => pokemon?.value?.sprites?.front_default || pokemon?.value?.sprites.other['official-artwork']?.front_default
-);
+  () => pokemon?.value?.sprites?.front_default || pokemon?.value?.sprites.other['official-artwork']?.front_default,
+)
 const gifImage = computed(
-  () => pokemon?.value?.sprites?.versions['generation-v']['black-white']?.animated?.front_default
-);
+  () => pokemon?.value?.sprites?.versions['generation-v']['black-white']?.animated?.front_default,
+)
 
-const pokemonType = computed(() => pokemon?.value?.types[0].type.name);
+const pokemonType = computed(() => pokemon?.value?.types[0].type.name)
 
-const isPokemonTooBig = computed(() => (pokemon.value?.height || 0) > 11);
+const isPokemonTooBig = computed(() => (pokemon.value?.height || 0) > 11)
 
-const handleLoadedImage = () => {
-  isLoading.value = false;
-};
+function handleLoadedImage() {
+  isLoading.value = false
+}
 
 onMounted(async () => {
-  isLoading.value = true;
+  isLoading.value = true
   await PokeAPI.Pokemon.resolve(props.id).then((res) => {
-    pokemon.value = res as IPokemonUpdated;
-  });
-});
+    pokemon.value = res as IPokemonUpdated
+  })
+})
 </script>
 
 <style scoped lang="scss">

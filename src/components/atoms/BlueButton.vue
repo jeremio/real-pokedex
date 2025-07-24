@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ copy: number; isActive?: boolean }>();
+defineProps<{ copy: number, isActive?: boolean }>()
 </script>
 
 <style scoped lang="scss">

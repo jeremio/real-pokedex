@@ -14,8 +14,8 @@
     <div class="pokedex-container__mobile-btn-wrapper">
       <MobileViewButton
         class="pokedex-container__mobile-btn"
-        @click="isShiftedRight = !isShiftedRight"
         :is-shifted-right="isShiftedRight"
+        @click="isShiftedRight = !isShiftedRight"
       />
     </div>
     <div v-if="isHelperOpen" class="pokedex-container__helper-wrapper">
@@ -25,38 +25,42 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
-import useControls from '@/composables/useControls';
-const { handleMainControl } = useControls();
-// eslint-disable-next-line prettier/prettier
-const keysToListenTo = ['down', 'up', 'left', 'right', 'x', 'z', 'a', 's', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'p'];
-const keysToBtnMap = { a: 'y', s: 'x', z: 'b', x: 'a', p: 'power', 0: '10' };
-const isShiftedRight = ref(false);
-const isHelperOpen = ref(false);
+import MobileViewButton from '@/components/atoms/MobileViewButton.vue'
+import PikachuHelper from '@/components/atoms/PikachuHelper.vue'
+import ButtonMap from '@/components/organisms/ButtonMap.vue'
+import KeyboardMap from '@/components/organisms/KeyboardMap.vue'
+import ThePokedex from '@/components/templates/ThePokedex.vue'
+import useControls from '@/composables/useControls.ts'
+
+const { handleMainControl } = useControls()
+const keysToListenTo = ['down', 'up', 'left', 'right', 'x', 'z', 'a', 's', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'p']
+const keysToBtnMap = { a: 'y', s: 'x', z: 'b', x: 'a', p: 'power', 0: '10' }
+const isShiftedRight = ref(false)
+const isHelperOpen = ref(false)
 
 function handleKeyUp(event: KeyboardEvent) {
-  event.preventDefault();
-  const command = event.key.toLowerCase().replace('arrow', '');
+  event.preventDefault()
+  const command = event.key.toLowerCase().replace('arrow', '')
   if (keysToListenTo.includes(command)) {
-    handleMainControl(keysToBtnMap[command] || command);
+    handleMainControl(keysToBtnMap[command] || command)
   }
 }
 
 function handleCloseHelper() {
-  isHelperOpen.value = false;
+  isHelperOpen.value = false
 }
 
 function handleOpenHelper() {
-  isHelperOpen.value = true;
+  isHelperOpen.value = true
 }
 
 onMounted(() => {
-  window.addEventListener('keyup', handleKeyUp);
-});
+  window.addEventListener('keyup', handleKeyUp)
+})
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keyup', handleKeyUp);
-});
+  window.removeEventListener('keyup', handleKeyUp)
+})
 </script>
 
 <style scoped lang="scss">

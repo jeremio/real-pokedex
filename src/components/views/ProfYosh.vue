@@ -1,7 +1,7 @@
 <template>
   <section class="yosh">
     <div class="yosh__bg" />
-    <img src="@/assets/images/BonzaiYoshProfessor.png" alt="professor yosh" />
+    <img src="@/assets/images/BonzaiYoshProfessor.png" alt="professor yosh">
   </section>
 </template>
 

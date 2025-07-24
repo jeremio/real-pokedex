@@ -17,6 +17,10 @@
   </section>
 </template>
 
+<script setup lang="ts">
+import Radar from '@/components/atoms/Radar.vue'
+</script>
+
 <style scoped lang="scss">
 .pokedex-left {
   position: relative;

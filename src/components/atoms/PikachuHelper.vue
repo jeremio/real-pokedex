@@ -1,33 +1,32 @@
 <template>
-  <div class="p-helper" v-on-click-outside="handleClose">
+  <div v-on-click-outside="handleClose" class="p-helper">
     <div class="p-helper__copy">
       <button class="p-helper__close" @click.stop="handleClose">
         <span>+</span>
       </button>
       <p>Pika pika. Hi there, I'm Pikachu!</p>
-      <br />
+      <br>
       <p>
         I'm here to help you navigate this Pokédex. Just so you know, you can only use these buttons on the pokedex or
         your keyboard to move around.
       </p>
-      <br />
+      <br>
       <p>
         So, let's get started! Use the arrow buttons to navigate and press (A) to select. And if you need need any help,
         just give me a shout - I'm always here to lend a paw! Pika pika!
       </p>
     </div>
-    <img src="@/assets/images/pikachu.png" alt="pikachu" class="p-helper__pikachu" />
+    <img src="@/assets/images/pikachu.png" alt="pikachu" class="p-helper__pikachu">
   </div>
 </template>
 
 <script setup lang="ts">
-// @ts-ignore
-import { vOnClickOutside } from '@vueuse/components';
+import { vOnClickOutside } from '@vueuse/components'
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close'])
 
 function handleClose() {
-  emit('close');
+  emit('close')
 }
 </script>
 
