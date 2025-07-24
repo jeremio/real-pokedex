@@ -40,15 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import type { IPokemonUpdated } from '@/types'
-import PokeAPI from 'pokeapi-typescript'
-
-interface IPokemonTile {
-  name: string
-  isActive: boolean
-  genNum: number
-  id: number
-}
+import type { IPokemonTile, IPokemonUpdated } from '@/types'
+import { PokeAPI } from 'pokeapi-typescript'
 
 const props = defineProps<IPokemonTile>()
 const pokemon = ref<IPokemonUpdated>()

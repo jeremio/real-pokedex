@@ -1,14 +1,8 @@
-import type { IGeneration, IPokemon } from 'pokeapi-typescript'
-import type { IPokemonSpritesUpdated } from '@/types'
+import type { Generation, Pokemon } from 'pokeapi-typescript'
+import type { IPokemonListItem, IPokemonSpritesUpdated } from '@/types'
 import { defineStore } from 'pinia'
-import PokeAPI from 'pokeapi-typescript'
+import { PokeAPI } from 'pokeapi-typescript'
 import { useLoading } from '@/composables/useLoading.ts'
-
-interface IPokemonListItem {
-  name: string
-  id: number
-  isLoaded: boolean
-}
 
 function transformSprites(sprites: IPokemonSpritesUpdated) {
   if (!sprites)
@@ -36,14 +30,14 @@ function transformSprites(sprites: IPokemonSpritesUpdated) {
 }
 
 export const usePokeStore = defineStore('pokemon', () => {
-  const generation = ref<IGeneration>()
+  const generation = ref<Generation>()
   const genNum = computed(() => generation.value?.id || 1)
   const region = computed(() => generation.value?.main_region.name)
   const pokemonList = ref<IPokemonListItem[]>()
   const pokemonListLength = computed(() => generation.value?.pokemon_species.length)
   const hasError = ref(false)
 
-  function createPokemonList(generation: IGeneration) {
+  function createPokemonList(generation: Generation) {
     const preSortedList = generation?.pokemon_species.map(({ name, url }) => {
       const id = Number(url.split('/')[6])
       return { name, id, isLoaded: false }
@@ -56,30 +50,34 @@ export const usePokeStore = defineStore('pokemon', () => {
   }
 
   async function getGen(genNum = 1) {
-    await PokeAPI.Generaition.resolve(genNum)
-      .then((res) => {
-        generation.value = res
-        pokemonList.value = createPokemonList(res)
-      })
-      .catch(e => console.log({ e }))
+    try {
+      const res = await PokeAPI.Generation.resolve(genNum) // ✅ Corrigé: Generation au lieu de Generaition
+      generation.value = res
+      pokemonList.value = createPokemonList(res)
+    }
+    catch (e) {
+      console.log({ e })
+    }
   }
 
   async function getPokemon(payload: string) {
     hasError.value = false
     if (!payload)
       return
-    await PokeAPI.Pokemon.resolve(payload)
-      .then(res => setActivePokemon(res))
-      .catch((e) => {
-        console.log({ e })
-        hasError.value = true
-      })
+    try {
+      const res = await PokeAPI.Pokemon.resolve(payload)
+      setActivePokemon(res)
+    }
+    catch (e) {
+      console.log({ e })
+      hasError.value = true
+    }
   }
 
   const { isLoading, executeFn: getActivePokemon } = useLoading(getPokemon)
   const { isLoading: isGenLoading, executeFn: getGeneration } = useLoading(getGen)
 
-  const activePokemon = ref<IPokemon>()
+  const activePokemon = ref<Pokemon>()
   const activePokemonId = computed(() => activePokemon.value?.id)
   const activePokemonName = computed(() => activePokemon.value?.name)
   const activePokemonPayload = ref<string>('')
@@ -88,7 +86,7 @@ export const usePokeStore = defineStore('pokemon', () => {
   const activePokemonSprites = computed(() => transformSprites(activePokemon.value?.sprites as IPokemonSpritesUpdated))
   const activePokemonHeight = computed(() => activePokemon.value?.height || 0)
 
-  function setActivePokemon(pokemon: IPokemon) {
+  function setActivePokemon(pokemon: Pokemon) {
     activePokemon.value = pokemon
   }
 

@@ -24,23 +24,15 @@
 </template>
 
 <script setup lang="ts">
-import type { INamedApiResource, IType, ITypeRelations } from 'pokeapi-typescript'
-import PokeAPI from 'pokeapi-typescript'
+import type { NamedApiResource, Type, TypeRelations } from 'pokeapi-typescript'
+import type { IDamageRelations } from '@/types'
+import { PokeAPI } from 'pokeapi-typescript'
 import ErrorCard from '@/components/atoms/ErrorCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import DamageGroup from '@/components/molecules/DamageGroup.vue'
 import { useLoading } from '@/composables/useLoading.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
-
-interface IDamageRelation {
-  group: string
-  types: string[]
-}
-interface IDamageRelations {
-  half: IDamageRelation
-  double: IDamageRelation
-}
 
 const props = defineProps<{
   relation: 'from' | 'to'
@@ -53,7 +45,7 @@ const controlsStore = useControlsStore()
 
 const { isYoshView } = storeToRefs(controlsStore)
 const { activePokemonType } = storeToRefs(pokeStore)
-const damageRelationsRawResponse = ref<ITypeRelations>()
+const damageRelationsRawResponse = ref<TypeRelations>()
 const hasError = ref(false)
 
 const gridColumns = computed(() => {
@@ -73,7 +65,7 @@ const damageRelations = computed(() => {
   if (!data)
     return
   const dataTransformed = Object.keys(data).reduce((relations, groupName) => {
-    const types = data[groupName].map((item: INamedApiResource<IType>) => item.name) || []
+    const types = data[groupName].map((item: NamedApiResource<Type>) => item.name) || []
     if (types?.length && groupName.includes(props.relation)) {
       const key = groupName.includes('half') ? 'half' : 'double'
       relations[key] = { group: groupName, types }

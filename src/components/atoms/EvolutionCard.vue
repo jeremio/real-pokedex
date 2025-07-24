@@ -17,15 +17,15 @@
 </template>
 
 <script setup lang="ts">
-import type { IEvolutionDetail, IPokemon } from 'pokeapi-typescript'
+import type { EvolutionDetail, Pokemon } from 'pokeapi-typescript'
 import type { IPokemonSpritesUpdated } from '@/types'
 import FrostCard from '@/components/atoms/FrostCard.vue'
 
 interface IProps {
   name: string
   url: string
-  details: IEvolutionDetail[]
-  pokemon: IPokemon
+  details: EvolutionDetail[]
+  pokemon: Pokemon
   totalEvolutions: number
   isNonLinear?: boolean
 }

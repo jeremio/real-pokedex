@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+interface IProps {
   isHeader?: boolean
   copy: string
   btnCopy?: string
 }
-defineProps<Props>()
+defineProps<IProps>()
 </script>
 
 <style scoped lang="scss">

@@ -43,14 +43,13 @@ import PokemonWild from '@/components/views/PokemonWild.vue'
 import ProfYosh from '@/components/views/ProfYosh.vue'
 import Region from '@/components/views/Region.vue'
 import SpriteCollection from '@/components/views/SpriteCollection.vue'
-// import useAnalytics from '@/composables/useSegment'
+
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 
 const emit = defineEmits(['open'])
 const pokeStore = usePokeStore()
 const controlsStore = useControlsStore()
-// const { trackNewUser } = useAnalytics()
 
 const { activePokemonName } = storeToRefs(pokeStore)
 const { mainView, secondaryView } = storeToRefs(controlsStore)
@@ -167,7 +166,6 @@ async function initPokedex() {
 
 onMounted(async () => {
   await initPokedex()
-  // trackNewUser(window)
 })
 </script>
 

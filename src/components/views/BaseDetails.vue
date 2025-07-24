@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import type { IPokemonSpecies } from 'pokeapi-typescript'
-import PokeAPI from 'pokeapi-typescript'
+import type { PokemonSpecies } from 'pokeapi-typescript'
+import { PokeAPI } from 'pokeapi-typescript'
 import FrostCard from '@/components/atoms/FrostCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import TypePill from '@/components/atoms/TypePill.vue'
@@ -82,13 +82,13 @@ const pokemonTypes = computed(() => {
   return activePokemon.value?.types.map(({ type }) => type.name) || ['normal']
 })
 
-function getFlavortText(species: IPokemonSpecies) {
+function getFlavortText(species: PokemonSpecies) {
   const textEntries = species?.flavor_text_entries
   const textEntry = textEntries?.find(({ language }) => language.name == 'en')
   return textEntry?.flavor_text || ''
 }
 
-function getGenus({ genera }: IPokemonSpecies) {
+function getGenus({ genera }: PokemonSpecies) {
   return genera?.find(({ language }) => language.name == 'en')?.genus || ''
 }
 

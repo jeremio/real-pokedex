@@ -28,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import type { IMove, IPokemonMove } from 'pokeapi-typescript'
-import PokeAPI from 'pokeapi-typescript'
+import type { Move, PokemonMove } from 'pokeapi-typescript'
+import { PokeAPI } from 'pokeapi-typescript'
 import FrostCard from '@/components/atoms/FrostCard.vue'
 import Icon from '@/components/atoms/Icon.vue'
 
@@ -37,6 +37,7 @@ import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import { useLoading } from '@/composables/useLoading.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
+import type {IMoveListItem, IPokeMove} from "@/types";
 
 const props = defineProps<{
   filterBy: 'level-up' | 'machine'
@@ -165,19 +166,7 @@ const yoshMoves = {
   ],
 }
 
-interface IPokeMove extends Move {
-  levelLearnedAt: number
-  machineLearnedBy: string
-}
 
-interface IMoveListItem {
-  name: string
-  type: string
-  levelLearnedAt: number
-  damageClass: string
-  machineLearnedBy: string
-  power: number
-}
 
 const pokeStore = usePokeStore()
 const movesList = ref<IMoveListItem[]>()
@@ -188,11 +177,11 @@ const hasMoves = computed(() => {
   return isYoshView.value || (!isLoading.value && movesList.value?.length)
 })
 
-function filterActivePokemonMoves(moves: IPokemonMove[], filterBy: string) {
+function filterActivePokemonMoves(moves: PokemonMove[], filterBy: string) {
   return moves.filter(move => move.version_group_details[0].move_learn_method.name === filterBy)
 }
 
-async function getMachineLearnedBy({ machines }: IMove): Promise<string> {
+async function getMachineLearnedBy({ machines }: Move): Promise<string> {
   if (!machines.length)
     return ''
   // todo: filter by current generation
@@ -209,7 +198,7 @@ async function getMachineLearnedBy({ machines }: IMove): Promise<string> {
   return machine
 }
 
-async function getMove({ move, version_group_details }: IPokemonMove) {
+async function getMove({ move, version_group_details }: PokemonMove) {
   const levelLearnedAt = version_group_details[0]?.level_learned_at || 0
   return await PokeAPI.Move.resolve(move.name)
     .then(async (res) => {
@@ -247,7 +236,7 @@ function sortMoves(moves: IPokeMove[], filterBy: string) {
     .slice(0, 7)
 }
 
-async function getMoves(pokemonMoves: IPokemonMove[], filterBy: string) {
+async function getMoves(pokemonMoves: PokemonMove[], filterBy: string) {
   if (!pokemonMoves?.length) {
   }
   else {

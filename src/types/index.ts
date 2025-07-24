@@ -1,4 +1,4 @@
-import type { IPokemon, IPokemonSprites } from 'pokeapi-typescript'
+import type { EvolutionDetail, Move, Pokemon, PokemonSprites } from 'pokeapi-typescript'
 
 export type TMainView = 'OFF' | 'INTRO' | 'MENU' | 'LIST' | 'POKEMON' | 'YOSH' | 'CREDITS' | 'GENERATIONS'
 
@@ -22,7 +22,7 @@ interface IFullSpriteSheet {
   front_shiny_female: string
 }
 
-export interface IPokemonSpritesUpdated extends IPokemonSprites {
+export interface IPokemonSpritesUpdated extends PokemonSprites {
   'other': {
     dream_world: {
       front_default: string
@@ -48,7 +48,7 @@ export interface IPokemonSpritesUpdated extends IPokemonSprites {
   }
 }
 
-export interface IPokemonUpdated extends IPokemon {
+export interface IPokemonUpdated extends Pokemon {
   sprites: IPokemonSpritesUpdated
 }
 
@@ -64,4 +64,41 @@ export interface INavigateOptions {
   end: number
   num: number
   type: string
+}
+
+export interface IPokeEvolution {
+  name: string
+  url: string
+  details: EvolutionDetail[]
+  pokemon: Pokemon
+  isNonLinear?: boolean
+}
+
+interface IDamageRelation {
+  group: string
+  types: string[]
+}
+export interface IDamageRelations {
+  half: IDamageRelation
+  double: IDamageRelation
+}
+
+export interface IPokemonListItem {
+  name: string
+  id: number
+  isLoaded: boolean
+}
+
+export interface IPokeMove extends Move {
+  levelLearnedAt: number
+  machineLearnedBy: string
+}
+
+export interface IMoveListItem {
+  name: string
+  type: string
+  levelLearnedAt: number
+  damageClass: string
+  machineLearnedBy: string
+  power: number
 }

@@ -7,10 +7,10 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+interface IProps {
   variant?: 'sm' | 'md' | 'lg'
 }
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<IProps>(), {
   variant: 'lg',
 })
 </script>

@@ -32,8 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import type { IChainLink, IEvolutionDetail, IPokemon } from 'pokeapi-typescript'
-import PokeAPI from 'pokeapi-typescript'
+import type { ChainLink } from 'pokeapi-typescript'
+import type { IPokeEvolution } from '@/types'
+import { PokeAPI } from 'pokeapi-typescript'
 import EvolutionCard from '@/components/atoms/EvolutionCard.vue'
 import FrostCard from '@/components/atoms/FrostCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
@@ -56,14 +57,6 @@ const yoshs = [
   { name: 'Prof. Yosh', img: professorYoshUrl, level: '45 years' },
 ]
 
-interface IPokeEvolution {
-  name: string
-  url: string
-  details: IEvolutionDetail[]
-  pokemon: IPokemon
-  isNonLinear?: boolean
-}
-
 const pokeStore = usePokeStore()
 const { activePokemonId } = storeToRefs(pokeStore)
 const evoChain = ref<IPokeEvolution[]>()
@@ -72,7 +65,7 @@ const totalEvolutions = computed(() => {
   return evoChain.value?.length || 0
 })
 
-async function mapEvolutionsRecursively(chain: IChainLink, evolutions: IPokeEvolution[]) {
+async function mapEvolutionsRecursively(chain: ChainLink, evolutions: IPokeEvolution[]) {
   const { species, evolution_details, evolves_to } = chain
   const pokemon = await PokeAPI.Pokemon.resolve(species.name)
   evolutions.push({ ...species, details: evolution_details, pokemon })
@@ -83,7 +76,7 @@ async function mapEvolutionsRecursively(chain: IChainLink, evolutions: IPokeEvol
   return evolutions
 }
 
-async function mapEvolutionsLinearly(chain: IChainLink, evolutions: IPokeEvolution[]) {
+async function mapEvolutionsLinearly(chain: ChainLink, evolutions: IPokeEvolution[]) {
   chain.evolves_to.forEach(async (evo) => {
     const { species, evolution_details } = evo
     const pokemon = await PokeAPI.Pokemon.resolve(species.name)
