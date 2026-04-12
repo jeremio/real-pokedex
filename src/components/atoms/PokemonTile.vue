@@ -28,7 +28,9 @@
         :src="spriteImage"
         alt="pokemon sprite"
         class="pokemon-tile__sprite"
-        :class="{ 'pokemon-tile__sprite--backup-active': isActive && !gifImage }"
+        :class="{
+          'pokemon-tile__sprite--backup-active': isActive && !gifImage,
+        }"
         height="64px"
         width="64px"
         loading="lazy"
@@ -47,15 +49,19 @@ const props = defineProps<IPokemonTile>()
 const pokemon = ref<IPokemonUpdated>()
 const isLoading = ref(false)
 
+const spriteImage = computed(
+  () =>
+    pokemon?.value?.sprites?.front_default
+    || pokemon?.value?.sprites.other['official-artwork']?.front_default,
+)
+const gifImage = computed(
+  () =>
+    pokemon?.value?.sprites?.versions['generation-v']['black-white']?.animated
+      ?.front_default,
+)
 const isGifVisible = computed(() => {
   return props.isActive && gifImage.value
 })
-const spriteImage = computed(
-  () => pokemon?.value?.sprites?.front_default || pokemon?.value?.sprites.other['official-artwork']?.front_default,
-)
-const gifImage = computed(
-  () => pokemon?.value?.sprites?.versions['generation-v']['black-white']?.animated?.front_default,
-)
 
 const pokemonType = computed(() => pokemon?.value?.types[0].type.name)
 

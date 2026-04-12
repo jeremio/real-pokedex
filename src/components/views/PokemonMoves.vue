@@ -5,7 +5,11 @@
       <li v-for="move in movesList" :key="`pokemon-move--${move.name}`">
         <FrostCard>
           <div class="poke-moves__move">
-            <Icon class="poke-moves__icon" :name="`type-${move.type}`" :class="`poke-moves__icon--${move.type}`" />
+            <Icon
+              class="poke-moves__icon"
+              :name="`type-${move.type}`"
+              :class="`poke-moves__icon--${move.type}`"
+            />
             <p class="poke-moves__move-name">
               {{ move.name }}
             </p>
@@ -16,7 +20,7 @@
               {{ move.machineLearnedBy }}
             </p>
             <p>{{ move.damageClass }}</p>
-            <p style="display: flex; alignitems: center; gap: 4px">
+            <p style="display: flex; align-items: center; gap: 4px">
               {{ move.power }}
               <Icon name="swords-icon" class="poke-moves__sword-icon" />
             </p>
@@ -29,15 +33,15 @@
 
 <script setup lang="ts">
 import type { Move, PokemonMove } from 'pokeapi-typescript'
+import type { IMoveListItem, IPokeMove } from '@/types'
 import { PokeAPI } from 'pokeapi-typescript'
 import FrostCard from '@/components/atoms/FrostCard.vue'
-import Icon from '@/components/atoms/Icon.vue'
 
+import Icon from '@/components/atoms/Icon.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import { useLoading } from '@/composables/useLoading.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
-import type {IMoveListItem, IPokeMove} from "@/types";
 
 const props = defineProps<{
   filterBy: 'level-up' | 'machine'
@@ -166,8 +170,6 @@ const yoshMoves = {
   ],
 }
 
-
-
 const pokeStore = usePokeStore()
 const movesList = ref<IMoveListItem[]>()
 
@@ -178,7 +180,9 @@ const hasMoves = computed(() => {
 })
 
 function filterActivePokemonMoves(moves: PokemonMove[], filterBy: string) {
-  return moves.filter(move => move.version_group_details[0].move_learn_method.name === filterBy)
+  return moves.filter(
+    move => move.version_group_details[0].move_learn_method.name === filterBy,
+  )
 }
 
 async function getMachineLearnedBy({ machines }: Move): Promise<string> {
@@ -237,12 +241,12 @@ function sortMoves(moves: IPokeMove[], filterBy: string) {
 }
 
 async function getMoves(pokemonMoves: PokemonMove[], filterBy: string) {
-  if (!pokemonMoves?.length) {
-  }
-  else {
+  if (pokemonMoves?.length) {
     try {
       const filteredMoves = filterActivePokemonMoves(pokemonMoves, filterBy)
-      const moves = await Promise.all(filteredMoves.map(async move => await getMove(move)))
+      const moves = await Promise.all(
+        filteredMoves.map(async move => await getMove(move)),
+      )
       const sortedMoves = sortMoves(moves as IPokeMove[], filterBy)
       const transformedMoves = transformMoves(sortedMoves)
       movesList.value = transformedMoves

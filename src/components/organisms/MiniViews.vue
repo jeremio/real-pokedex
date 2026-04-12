@@ -32,10 +32,10 @@ function hectogramsToPounds(num: number) {
 }
 
 function decimetersToFeet(num: number) {
-  const decimeterToFeet = 0.328084
-  const [feet, inches] = (num * decimeterToFeet).toFixed(2).split('.')
-  const trueInches = ((12 / Number(inches)) * 10).toFixed(0)
-  return `${feet}' ${trueInches}"`
+  const totalInches = num * 3.93701
+  const feet = Math.floor(totalInches / 12)
+  const inches = Math.round(totalInches % 12)
+  return `${feet}' ${inches}"`
 }
 
 const copy = computed(() => {

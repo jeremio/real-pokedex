@@ -3,9 +3,13 @@
     <div class="evo-chain__card">
       <PikachuLoader v-if="isLoading && !isYoshView" />
       <div v-else-if="isYoshView" class="evo-chain__pokemons">
-        <div v-for="(yosh, index) in yoshs" :key="`yosh-evo--${index}`" class="evo-chain__yosh">
+        <div
+          v-for="(yosh, index) in yoshs"
+          :key="`yosh-evo--${index}`"
+          class="evo-chain__yosh"
+        >
           <p>{{ yosh.level }}</p>
-          <img :src="(yosh.img as unknown as string)" :alt="yosh.name">
+          <img :src="yosh.img as unknown as string" :alt="yosh.name">
           <FrostCard>
             <label>{{ yosh.name }}</label>
           </FrostCard>
@@ -47,9 +51,18 @@ const { isYoshView } = storeToRefs(controlsStore)
 
 const { isLoading, executeFn } = useLoading(getEvoChain)
 
-const childYoshUrl = new URL('/src/assets/images/BonzaiYoshChild.png', import.meta.url)
-const youngYoshUrl = new URL('/src/assets/images/BonzaiYoshYoung.png', import.meta.url)
-const professorYoshUrl = new URL('/src/assets/images/BonzaiYoshProfessor.png', import.meta.url)
+const childYoshUrl = new URL(
+  '/src/assets/images/BonzaiYoshChild.png',
+  import.meta.url,
+)
+const youngYoshUrl = new URL(
+  '/src/assets/images/BonzaiYoshYoung.png',
+  import.meta.url,
+)
+const professorYoshUrl = new URL(
+  '/src/assets/images/BonzaiYoshProfessor.png',
+  import.meta.url,
+)
 
 const yoshs = [
   { name: 'Child Yosh', img: childYoshUrl, level: '9 years' },
@@ -65,7 +78,10 @@ const totalEvolutions = computed(() => {
   return evoChain.value?.length || 0
 })
 
-async function mapEvolutionsRecursively(chain: ChainLink, evolutions: IPokeEvolution[]) {
+async function mapEvolutionsRecursively(
+  chain: ChainLink,
+  evolutions: IPokeEvolution[],
+) {
   const { species, evolution_details, evolves_to } = chain
   const pokemon = await PokeAPI.Pokemon.resolve(species.name)
   evolutions.push({ ...species, details: evolution_details, pokemon })
@@ -76,8 +92,11 @@ async function mapEvolutionsRecursively(chain: ChainLink, evolutions: IPokeEvolu
   return evolutions
 }
 
-async function mapEvolutionsLinearly(chain: ChainLink, evolutions: IPokeEvolution[]) {
-  chain.evolves_to.forEach(async (evo) => {
+async function mapEvolutionsLinearly(
+  chain: ChainLink,
+  evolutions: IPokeEvolution[],
+) {
+  for (const evo of chain.evolves_to) {
     const { species, evolution_details } = evo
     const pokemon = await PokeAPI.Pokemon.resolve(species.name)
     evolutions.push({
@@ -86,7 +105,7 @@ async function mapEvolutionsLinearly(chain: ChainLink, evolutions: IPokeEvolutio
       pokemon,
       isNonLinear: true,
     })
-  })
+  }
   return evolutions
 }
 
@@ -96,15 +115,14 @@ async function getEvoChain(id: number) {
     return Number(res.evolution_chain.url.split('/')[6])
   })
   try {
-    // hacky test, meowth has a weird evo chain and it breaks the view
-    evoChain.value = await PokeAPI.EvolutionChain.resolve(chainId).then(async ({ chain }) =>
-      chain.evolves_to.length > 2
-        ? await mapEvolutionsLinearly(chain, evolutions)
-        : await mapEvolutionsRecursively(chain, evolutions),
+    evoChain.value = await PokeAPI.EvolutionChain.resolve(chainId).then(
+      async ({ chain }) =>
+        chain.evolves_to.length > 2
+          ? await mapEvolutionsLinearly(chain, evolutions)
+          : await mapEvolutionsRecursively(chain, evolutions),
     )
   }
   catch (e) {
-    // do something meaningfull
     console.log({ e })
   }
 }

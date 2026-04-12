@@ -1,4 +1,4 @@
-import type { TMainView } from '@/types'
+import type { TMainView, TSecondaryView } from '@/types'
 import { storeToRefs } from 'pinia'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
@@ -115,7 +115,7 @@ export default function useControls() {
       case '6':
       case '7':
       case '8':
-        setSecondaryView(command as any)
+        setSecondaryView(Number(command) as TSecondaryView)
         break
       default:
         break
@@ -199,7 +199,7 @@ export default function useControls() {
       case '6':
       case '7':
       case '8':
-        setSecondaryView(command as any)
+        setSecondaryView(Number(command) as TSecondaryView)
         break
       default:
         break

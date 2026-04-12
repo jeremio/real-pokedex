@@ -2,7 +2,11 @@
   <section class="damage-relations">
     <PikachuLoader v-if="isLoading" />
     <ErrorCard v-else-if="hasError" />
-    <div v-else class="damage-relations__groups" :class="{ 'damage-relations__groups--loaded': !isLoading }">
+    <div
+      v-else
+      class="damage-relations__groups"
+      :class="{ 'damage-relations__groups--loaded': !isLoading }"
+    >
       <DamageGroup
         class="damage-relations__group"
         v-bind="{
@@ -48,6 +52,22 @@ const { activePokemonType } = storeToRefs(pokeStore)
 const damageRelationsRawResponse = ref<TypeRelations>()
 const hasError = ref(false)
 
+const damageRelations = computed(() => {
+  const data = damageRelationsRawResponse?.value
+  if (!data)
+    return
+  const dataTransformed = Object.keys(data).reduce((relations, groupName) => {
+    const types
+      = data[groupName].map((item: NamedApiResource<Type>) => item.name) || []
+    if (types?.length && groupName.includes(props.relation)) {
+      const key = groupName.includes('half') ? 'half' : 'double'
+      relations[key] = { group: groupName, types }
+    }
+    return relations
+  }, {} as IDamageRelations)
+  return dataTransformed
+})
+
 const gridColumns = computed(() => {
   if (!damageRelations?.value)
     return '1fr 1fr'
@@ -60,21 +80,6 @@ const gridColumns = computed(() => {
   return `${halfCount}fr ${doubleCount}fr`
 })
 
-const damageRelations = computed(() => {
-  const data = damageRelationsRawResponse?.value
-  if (!data)
-    return
-  const dataTransformed = Object.keys(data).reduce((relations, groupName) => {
-    const types = data[groupName].map((item: NamedApiResource<Type>) => item.name) || []
-    if (types?.length && groupName.includes(props.relation)) {
-      const key = groupName.includes('half') ? 'half' : 'double'
-      relations[key] = { group: groupName, types }
-    }
-    return relations
-  }, {} as IDamageRelations)
-  return dataTransformed
-})
-
 function handleFailure(e) {
   console.log({ e })
   hasError.value = true
@@ -83,7 +88,10 @@ function handleFailure(e) {
 async function getDamageRelations(type: string) {
   const payload = isYoshView.value ? 'grass' : type
   await PokeAPI.Type.resolve(payload)
-    .then(({ damage_relations }) => (damageRelationsRawResponse.value = damage_relations))
+    .then(
+      ({ damage_relations }) =>
+        (damageRelationsRawResponse.value = damage_relations),
+    )
     .catch(e => handleFailure(e))
 }
 

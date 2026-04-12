@@ -2,6 +2,7 @@
   "name": "real-pokedex",
   "type": "module",
   "version": "0.0.0",
+  "packageManager": "pnpm@10.29.1+sha512.48dae233635a645768a3028d19545cacc1688639eeb1f3734e42d6d6b971afbf22aa1ac9af52a173d9c3a20c15857cfa400f19994d79a2f626fcc73fccda9bbc",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,7 +14,8 @@
   "dependencies": {
     "@vueuse/components": "^14.2.0",
     "@vueuse/core": "^14.2.0",
-    "vite-svg-loader": "^5.1.0",
+    "pinia": "^3.0.4",
+    "pokeapi-typescript": "^3.0.3",
     "vue": "^3.5.27"
   },
   "devDependencies": {
@@ -25,14 +27,12 @@
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.7.0",
     "jiti": "^2.6.1",
-    "pinia": "^3.0.4",
-    "pokeapi-typescript": "^3.0.3",
     "sass": "^1.97.3",
     "typescript": "^5.9.3",
     "unplugin-auto-import": "^21.0.0",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.6",
+    "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^3.2.4"
-  },
-  "packageManager": "pnpm@10.29.1+sha512.48dae233635a645768a3028d19545cacc1688639eeb1f3734e42d6d6b971afbf22aa1ac9af52a173d9c3a20c15857cfa400f19994d79a2f626fcc73fccda9bbc"
+  }
 }

@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 type AsyncFunction = (...args: any[]) => Promise<any>
 
-export function useLoading<T>(asyncFunction: AsyncFunction, minDuration = 1200) {
+export function useLoading(asyncFunction: AsyncFunction, minDuration = 1200) {
   const isLoading = ref(false)
 
   const executeFn = async (...args: any[]) => {

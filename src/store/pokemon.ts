@@ -34,7 +34,9 @@ export const usePokeStore = defineStore('pokemon', () => {
   const genNum = computed(() => generation.value?.id || 1)
   const region = computed(() => generation.value?.main_region.name)
   const pokemonList = ref<IPokemonListItem[]>()
-  const pokemonListLength = computed(() => generation.value?.pokemon_species.length)
+  const pokemonListLength = computed(
+    () => generation.value?.pokemon_species.length,
+  )
   const hasError = ref(false)
 
   function createPokemonList(generation: Generation) {
@@ -51,7 +53,7 @@ export const usePokeStore = defineStore('pokemon', () => {
 
   async function getGen(genNum = 1) {
     try {
-      const res = await PokeAPI.Generation.resolve(genNum) // ✅ Corrigé: Generation au lieu de Generaition
+      const res = await PokeAPI.Generation.resolve(genNum)
       generation.value = res
       pokemonList.value = createPokemonList(res)
     }
@@ -75,15 +77,20 @@ export const usePokeStore = defineStore('pokemon', () => {
   }
 
   const { isLoading, executeFn: getActivePokemon } = useLoading(getPokemon)
-  const { isLoading: isGenLoading, executeFn: getGeneration } = useLoading(getGen)
+  const { isLoading: isGenLoading, executeFn: getGeneration }
+    = useLoading(getGen)
 
   const activePokemon = ref<Pokemon>()
   const activePokemonId = computed(() => activePokemon.value?.id)
   const activePokemonName = computed(() => activePokemon.value?.name)
   const activePokemonPayload = ref<string>('')
-  const activePokemonType = computed(() => activePokemon.value?.types[0]?.type?.name || '')
+  const activePokemonType = computed(
+    () => activePokemon.value?.types[0]?.type?.name || '',
+  )
   const activePokemonMoves = computed(() => activePokemon.value?.moves || [])
-  const activePokemonSprites = computed(() => transformSprites(activePokemon.value?.sprites as IPokemonSpritesUpdated))
+  const activePokemonSprites = computed(() =>
+    transformSprites(activePokemon.value?.sprites as IPokemonSpritesUpdated),
+  )
   const activePokemonHeight = computed(() => activePokemon.value?.height || 0)
 
   function setActivePokemon(pokemon: Pokemon) {

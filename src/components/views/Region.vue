@@ -9,7 +9,7 @@ import { usePokeStore } from '@/store/pokemon.ts'
 
 const pokeStore = usePokeStore()
 
-const { genNum, region } = storeToRefs(pokeStore)
+const { region } = storeToRefs(pokeStore)
 </script>
 
 <style scoped lang="scss">
@@ -22,59 +22,59 @@ const { genNum, region } = storeToRefs(pokeStore)
   background-position: center;
   padding: $medium-window-padding;
   &--kanto {
-    background-image: url('@/assets/images/kanto_map.webp');
+    background-image: url("@/assets/images/kanto_map.webp");
     h2 {
       bottom: 8px;
       left: 8px;
     }
   }
   &--hoenn {
-    background-image: url('@/assets/images/hoenn_map.webp');
+    background-image: url("@/assets/images/hoenn_map.webp");
     h2 {
       top: 8px;
       right: 8px;
     }
   }
   &--alola {
-    background-image: url('@/assets/images/alola_map.webp');
+    background-image: url("@/assets/images/alola_map.webp");
     h2 {
       bottom: 8px;
       left: 8px;
     }
   }
   &--kalos {
-    background-image: url('@/assets/images/kalos_map.webp');
+    background-image: url("@/assets/images/kalos_map.webp");
     h2 {
       top: 8px;
       left: 8px;
     }
   }
   &--johto {
-    background-image: url('@/assets/images/johto_map.webp');
+    background-image: url("@/assets/images/johto_map.webp");
     h2 {
       bottom: 8px;
       right: 8px;
     }
   }
   &--sinnoh {
-    background-image: url('@/assets/images/sinnoh_map.webp');
+    background-image: url("@/assets/images/sinnoh_map.webp");
     h2 {
       top: 8px;
       left: 8px;
     }
   }
   &--unova {
-    background-image: url('@/assets/images/unova_map.webp');
+    background-image: url("@/assets/images/unova_map.webp");
     h2 {
       top: 8px;
       left: 8px;
     }
   }
   &--galar {
-    background-image: url('@/assets/images/galar_map.webp');
+    background-image: url("@/assets/images/galar_map.webp");
   }
   &--paldea {
-    background-image: url('@/assets/images/paldea_map.webp');
+    background-image: url("@/assets/images/paldea_map.webp");
     h2 {
       top: 8px;
       right: 8px;

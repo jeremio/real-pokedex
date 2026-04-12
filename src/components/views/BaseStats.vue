@@ -60,7 +60,7 @@ function getMaxStat(stat: number, isHp = false) {
   let max = stat
   if (isHp)
     max = stat * 2 + 110
-  else max = stat * 2 - 5 // temp. need to find the real formula
+  else max = stat * 2 - 5
   return Math.floor(max)
 }
 </script>

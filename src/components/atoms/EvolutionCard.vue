@@ -1,7 +1,10 @@
 <template>
   <article
     class="pokemon-card"
-    :class="[{ 'pokemon-card--non-linear': isNonLinear }, `pokemon-card--${totalEvolutions}`]"
+    :class="[
+      { 'pokemon-card--non-linear': isNonLinear },
+      `pokemon-card--${totalEvolutions}`,
+    ]"
   >
     <div class="pokemon-card__img-wrapper">
       <img :src="sprite" alt="pokemon sprite">
@@ -34,10 +37,6 @@ const props = defineProps<IProps>()
 const sprite = computed(() => {
   const { other } = props.pokemon.sprites as IPokemonSpritesUpdated
   return other['official-artwork'].front_default
-})
-
-const isArrowVis = computed(() => {
-  return props.totalEvolutions >= 2 && props.totalEvolutions <= 4 && trigger.value !== 'base'
 })
 
 function getTrigger(details) {
@@ -90,6 +89,14 @@ const trigger = computed(() => {
   const firstDetails = props.details[0]
   const lastDetails = props.details[detailsLength - 1]
   return getTrigger(firstDetails) || getTrigger(lastDetails)
+})
+
+const isArrowVis = computed(() => {
+  return (
+    props.totalEvolutions >= 2
+    && props.totalEvolutions <= 4
+    && trigger.value !== 'base'
+  )
 })
 </script>
 

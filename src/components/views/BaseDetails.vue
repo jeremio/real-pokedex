@@ -18,7 +18,8 @@
         <span v-if="!hasData">
           <br>
           <br>
-          We apologize, as some of {{ name }} details are missing 😞. Evolutions, moves, etc are still available.
+          We apologize, as some of {{ name }} details are missing 😞.
+          Evolutions, moves, etc are still available.
         </span>
         <template v-if="description">
           {{ description.toLowerCase() }}.
@@ -26,11 +27,17 @@
         {{ flavorText }}
       </section>
       <p class="base-details__location">
-        <span v-if="encounter && location"> Located {{ encounter?.toLowerCase() }} near {{ location }}. </span>
+        <span v-if="encounter && location">
+          Located {{ encounter?.toLowerCase() }} near {{ location }}.
+        </span>
       </p>
 
       <div class="base-details__types">
-        <TypePill v-for="pokemonType in pokemonTypes" :key="pokemonType" :type="pokemonType" />
+        <TypePill
+          v-for="pokemonType in pokemonTypes"
+          :key="pokemonType"
+          :type="pokemonType"
+        />
       </div>
     </div>
   </section>
@@ -61,7 +68,13 @@ const encounter = ref<string>('')
 const { isLoading, executeFn } = useLoading(getData)
 
 const hasData = computed(() => {
-  return description.value || flavorText.value || genus.value || location.value || encounter.value
+  return (
+    description.value
+    || flavorText.value
+    || genus.value
+    || location.value
+    || encounter.value
+  )
 })
 
 const name = computed(() => {
@@ -84,12 +97,12 @@ const pokemonTypes = computed(() => {
 
 function getFlavortText(species: PokemonSpecies) {
   const textEntries = species?.flavor_text_entries
-  const textEntry = textEntries?.find(({ language }) => language.name == 'en')
+  const textEntry = textEntries?.find(({ language }) => language.name === 'en')
   return textEntry?.flavor_text || ''
 }
 
 function getGenus({ genera }: PokemonSpecies) {
-  return genera?.find(({ language }) => language.name == 'en')?.genus || ''
+  return genera?.find(({ language }) => language.name === 'en')?.genus || ''
 }
 
 async function getSpecies(payload: number) {
@@ -106,7 +119,9 @@ async function getSpecies(payload: number) {
 async function getDescription(payload: number) {
   await PokeAPI.Characteristic.resolve(payload)
     .then((res: any) => {
-      description.value = res?.descriptions.find(({ language }) => language.name === 'en')?.description
+      description.value = res?.descriptions.find(
+        ({ language }) => language.name === 'en',
+      )?.description
     })
     .catch(async (_e) => {
       description.value = ''
@@ -116,7 +131,7 @@ async function getDescription(payload: number) {
 async function getLocation(payload: number) {
   await PokeAPI.LocationArea.resolve(payload)
     .then((res) => {
-      location.value = res.location.name.replace('-', ' ')
+      location.value = res.location.name.replaceAll('-', ' ')
     })
     .catch((_e) => {
       location.value = ''
@@ -126,7 +141,7 @@ async function getLocation(payload: number) {
 async function getEncounter(payload: number) {
   await PokeAPI.EncounterMethod.resolve(payload)
     .then(({ names }) => {
-      const data = names?.find(({ language }) => language.name == 'en')
+      const data = names?.find(({ language }) => language.name === 'en')
       encounter.value = data?.name || ''
     })
     .catch((_e) => {
@@ -144,11 +159,17 @@ function getYoshData() {
 }
 
 async function getData(payload: number, isYosh: boolean) {
-  if (isYosh)
+  if (isYosh) {
     getYoshData()
-  else if (!payload)
-    return
-  else await Promise.all([getDescription(payload), getSpecies(payload), getLocation(payload), getEncounter(payload)])
+  }
+  else if (payload) {
+    await Promise.all([
+      getDescription(payload),
+      getSpecies(payload),
+      getLocation(payload),
+      getEncounter(payload),
+    ])
+  }
 }
 
 watchEffect(() => {
