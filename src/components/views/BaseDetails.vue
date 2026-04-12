@@ -47,7 +47,7 @@ import FrostCard from '@/components/atoms/FrostCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import TypePill from '@/components/atoms/TypePill.vue'
 import { useLoading } from '@/composables/useLoading.ts'
-import { yoshDetails } from '@/data/yosh.ts'
+import { yoshDetails, yoshTypes } from '@/data/yosh.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 
