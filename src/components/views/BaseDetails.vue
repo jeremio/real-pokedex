@@ -50,6 +50,7 @@ import FrostCard from '@/components/atoms/FrostCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import TypePill from '@/components/atoms/TypePill.vue'
 import { useLoading } from '@/composables/useLoading.ts'
+import { yoshDetails } from '@/data/yosh.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 
@@ -91,7 +92,7 @@ const entryNumber = computed(() => {
 
 const pokemonTypes = computed(() => {
   if (isYoshView.value)
-    return ['grass', 'dragon']
+    return yoshTypes
   return activePokemon.value?.types.map(({ type }) => type.name) || ['normal']
 })
 
@@ -150,12 +151,11 @@ async function getEncounter(payload: number) {
 }
 
 function getYoshData() {
-  flavorText.value
-    = 'If he\'s not spending time with his wife & daughter then you can find him either gardening or building cool new Vue apps'
-  genus.value = 'Pokédex creator '
-  description.value = 'Loves tacos and pineapple pizza'
-  encounter.value = 'at his desk working too much or gardening'
-  location.value = 'sunny south Florida'
+  flavorText.value = yoshDetails.flavorText
+  genus.value = yoshDetails.genus
+  description.value = yoshDetails.description
+  encounter.value = yoshDetails.encounter
+  location.value = yoshDetails.location
 }
 
 async function getData(payload: number, isYosh: boolean) {

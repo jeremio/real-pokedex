@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import type { INavigateOptions, TMainView, TSecondaryView } from '@/types'
 import { defineStore, storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
@@ -42,71 +43,37 @@ export const useControlsStore = defineStore('controls', () => {
     listPosition.value = 0
   }
 
-  function navigatePokemonList(command: string) {
-    lastDirection.value = command
-    const position = listPosition.value
-    const end = Number(pokemonListLength.value) - 1
-    const options = { position, end, type: 'ADD', num: 1 }
+  function navigate(command: string, positionRef: Ref<number>, end: number) {
+    const options = { position: positionRef.value, end, type: 'ADD', num: 1 }
     switch (command) {
       case 'up':
-        listPosition.value = getNextMove({ ...options, type: 'SUB', num: 2 })
+        positionRef.value = getNextMove({ ...options, type: 'SUB', num: 2 })
         break
       case 'down':
-        listPosition.value = getNextMove({ ...options, num: 2 })
+        positionRef.value = getNextMove({ ...options, num: 2 })
         break
       case 'left':
-        listPosition.value = getNextMove({ ...options, type: 'SUB' })
+        positionRef.value = getNextMove({ ...options, type: 'SUB' })
         break
       case 'right':
-        listPosition.value = getNextMove({ ...options })
+        positionRef.value = getNextMove({ ...options })
         break
       default:
         break
     }
+  }
+
+  function navigatePokemonList(command: string) {
+    lastDirection.value = command
+    navigate(command, listPosition, Number(pokemonListLength.value) - 1)
   }
 
   function navigateMainMenu(command: string) {
-    const position = menuPosition.value
-    const end = 3
-    const options = { position, end, type: 'ADD', num: 1 }
-    switch (command) {
-      case 'up':
-        menuPosition.value = getNextMove({ ...options, type: 'SUB', num: 2 })
-        break
-      case 'down':
-        menuPosition.value = getNextMove({ ...options, num: 2 })
-        break
-      case 'left':
-        menuPosition.value = getNextMove({ ...options, type: 'SUB' })
-        break
-      case 'right':
-        menuPosition.value = getNextMove({ ...options })
-        break
-      default:
-        break
-    }
+    navigate(command, menuPosition, 3)
   }
 
   function navigateGensMenu(command: string) {
-    const position = gensPosition.value
-    const end = 8
-    const options = { position, end, type: 'ADD', num: 1 }
-    switch (command) {
-      case 'up':
-        gensPosition.value = getNextMove({ ...options, type: 'SUB', num: 2 })
-        break
-      case 'down':
-        gensPosition.value = getNextMove({ ...options, num: 2 })
-        break
-      case 'left':
-        gensPosition.value = getNextMove({ ...options, type: 'SUB' })
-        break
-      case 'right':
-        gensPosition.value = getNextMove({ ...options })
-        break
-      default:
-        break
-    }
+    navigate(command, gensPosition, 8)
   }
 
   function getNextMove(options: INavigateOptions) {

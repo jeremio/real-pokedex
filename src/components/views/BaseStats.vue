@@ -17,6 +17,7 @@ import CircleRange from '@/components/atoms/CircleRange.vue'
 import ErrorCard from '@/components/atoms/ErrorCard.vue'
 import FrostCard from '@/components/atoms/FrostCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
+import { yoshStats } from '@/data/yosh.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 
@@ -26,15 +27,6 @@ const { isYoshView } = storeToRefs(controlsStore)
 const pokeStore = usePokeStore()
 
 const { activePokemon, isLoading, hasError } = storeToRefs(pokeStore)
-
-const yoshStats = [
-  { label: 'js', max: 500, base: 305 },
-  { label: 'html', max: 1200, base: 786 },
-  { label: 'css', max: 1200, base: 808 },
-  { label: 'creative', max: 700, base: 444 },
-  { label: 'funny', max: 500, base: 200 },
-  { label: 'cool', max: 500, base: 250 },
-]
 
 const stats = computed(() => {
   const isYosh = isYoshView.value

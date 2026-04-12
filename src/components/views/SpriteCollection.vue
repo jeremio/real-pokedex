@@ -3,12 +3,20 @@
     <PikachuLoader v-if="isLoading && !isYoshView" />
     <div v-else class="sprite-collection__container">
       <div class="sprite-collection__sprites">
-        <div v-for="sprite in spritesSplit.firstHalf" :key="sprite" class="sprite-collection__sprite">
+        <div
+          v-for="sprite in spritesSplit.firstHalf"
+          :key="sprite"
+          class="sprite-collection__sprite"
+        >
           <img :src="sprite" alt="sprite">
         </div>
       </div>
       <div class="sprite-collection__sprites">
-        <div v-for="sprite in spritesSplit.secondHalf" :key="sprite" class="sprite-collection__sprite">
+        <div
+          v-for="sprite in spritesSplit.secondHalf"
+          :key="sprite"
+          class="sprite-collection__sprite"
+        >
           <img :src="sprite" alt="sprite">
         </div>
       </div>
@@ -31,30 +39,9 @@ const { isYoshView } = storeToRefs(controlsStore)
 const isLoading = ref(false)
 const sprites = ref([])
 
-const yoshSprites = {
-  firstHalf: [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/512px-HTML5_logo_and_wordmark.svg.png?20170517184425',
-    'https://cdn.freebiesupply.com/logos/large/2x/css3-logo-png-transparent.png',
-    'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png',
-    'https://www.pngall.com/wp-content/uploads/13/Pokemon-Logo-PNG-Pic.png',
-    'https://cdn.freebiesupply.com/logos/thumbs/2x/prettier-1-logo.png',
-  ],
-  secondHalf: [
-    'https://vuejs.org/images/logo.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vitejs-logo.svg/1039px-Vitejs-logo.svg.png',
-    'https://pinia.vuejs.org/logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Sass_Logo_Color.svg/2560px-Sass_Logo_Color.svg.png',
-    'https://seeklogo.com/images/S/segment-logo-FCBB33F58E-seeklogo.com.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/ESLint_logo.svg/1200px-ESLint_logo.svg.png',
-  ],
-}
-
 const spritesSplit = computed(() => {
   if (isYoshView.value)
-    return yoshSprites
+    return yoshSpritesData
   if (!sprites.value)
     return { firstHalf: [], secondHalf: [] }
   const middleIndex = Math.ceil(sprites.value.length / 2)
@@ -65,9 +52,12 @@ const spritesSplit = computed(() => {
 
 const scrollSpeed = computed(() => {
   const ratio = 1.558
-  const totalYoshSprites = yoshSprites.firstHalf.length + yoshSprites.secondHalf.length
+  const totalYoshSprites
+    = yoshSpritesData.firstHalf.length + yoshSpritesData.secondHalf.length
   const totalPokemonSprites = sprites.value.length
-  const totalSprites = isYoshView.value ? totalYoshSprites : totalPokemonSprites
+  const totalSprites = isYoshView.value
+    ? totalYoshSprites
+    : totalPokemonSprites
   return `${totalSprites * ratio}s`
 })
 
@@ -79,7 +69,10 @@ function shuffleSprites(array) {
   return array
 }
 
-function extractSprites(sprites: IPokemonSpritesUpdated, spritesArray: string[]) {
+function extractSprites(
+  sprites: IPokemonSpritesUpdated,
+  spritesArray: string[],
+) {
   for (const key in sprites) {
     if (key in sprites) {
       const value = sprites[key]

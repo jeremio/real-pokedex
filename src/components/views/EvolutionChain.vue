@@ -43,6 +43,7 @@ import EvolutionCard from '@/components/atoms/EvolutionCard.vue'
 import FrostCard from '@/components/atoms/FrostCard.vue'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
 import { useLoading } from '@/composables/useLoading.ts'
+import { yoshEvolutions } from '@/data/yosh.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 
@@ -51,24 +52,7 @@ const { isYoshView } = storeToRefs(controlsStore)
 
 const { isLoading, executeFn } = useLoading(getEvoChain)
 
-const childYoshUrl = new URL(
-  '/src/assets/images/BonzaiYoshChild.png',
-  import.meta.url,
-)
-const youngYoshUrl = new URL(
-  '/src/assets/images/BonzaiYoshYoung.png',
-  import.meta.url,
-)
-const professorYoshUrl = new URL(
-  '/src/assets/images/BonzaiYoshProfessor.png',
-  import.meta.url,
-)
-
-const yoshs = [
-  { name: 'Child Yosh', img: childYoshUrl, level: '9 years' },
-  { name: 'Young Yosh', img: youngYoshUrl, level: '27 years' },
-  { name: 'Prof. Yosh', img: professorYoshUrl, level: '45 years' },
-]
+const yoshs = yoshEvolutions
 
 const pokeStore = usePokeStore()
 const { activePokemonId } = storeToRefs(pokeStore)
