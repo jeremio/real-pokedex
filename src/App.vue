@@ -54,7 +54,6 @@ const keysToListenTo = [
   '7',
   '8',
   '9',
-  '0',
   'p',
 ]
 const keysToBtnMap: Record<string, string> = {
@@ -63,7 +62,6 @@ const keysToBtnMap: Record<string, string> = {
   z: 'b',
   x: 'a',
   p: 'power',
-  0: '10',
 }
 const isShiftedRight = ref(false)
 const isHelperOpen = ref(false)
