@@ -1,0 +1,6 @@
+// Variables, functions and mixins only — injected into every component via additionalData.
+// Do NOT add CSS rules here (they would be duplicated per component).
+@import "./utils";
+@import "./colors";
+@import "./font";
+@import "./sizes";

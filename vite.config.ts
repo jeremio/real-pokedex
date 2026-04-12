@@ -12,7 +12,6 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '~': fileURLToPath(new URL('./', import.meta.url)),
-      '#': fileURLToPath(new URL('./types', import.meta.url)),
     },
   },
   define: {
@@ -25,17 +24,14 @@ export default defineConfig({
     svgLoader(),
     AutoImport({
       dts: path.resolve(path.resolve(), 'src', 'auto-imports.d.ts'),
-      imports: [
-        'vue',
-        'pinia',
-      ],
+      imports: ['vue', 'pinia'],
       vueTemplate: true,
     }),
   ],
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/assets/main.scss";',
+        additionalData: '@import "@/assets/scss/_tools.scss";',
       },
     },
   },

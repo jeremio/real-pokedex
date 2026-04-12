@@ -166,56 +166,10 @@ onMounted(async () => {
     opacity: 1;
   }
 
-  &--active#{&}--fire {
-    @include active($pokemon-fire-light);
-  }
-  &--active#{&}--grass {
-    @include active($pokemon-grass-light);
-  }
-  &--active#{&}--water {
-    @include active($pokemon-water-light);
-  }
-  &--active#{&}--normal {
-    @include active($pokemon-normal-light);
-  }
-  &--active#{&}--poison {
-    @include active($pokemon-poison-light);
-  }
-  &--active#{&}--bug {
-    @include active($pokemon-bug-light);
-  }
-  &--active#{&}--ground {
-    @include active($pokemon-ground-light);
-  }
-  &--active#{&}--fighting {
-    @include active($pokemon-fighting-light);
-  }
-  &--active#{&}--rock {
-    @include active($pokemon-rock-light);
-  }
-  &--active#{&}--electric {
-    @include active($pokemon-electric-light);
-  }
-  &--active#{&}--fairy {
-    @include active($pokemon-fairy-light);
-  }
-  &--active#{&}--psychic {
-    @include active($pokemon-psychic-light);
-  }
-  &--active#{&}--ghost {
-    @include active($pokemon-ghost-light);
-  }
-  &--active#{&}--ice {
-    @include active($pokemon-ice-light);
-  }
-  &--active#{&}--dragon {
-    @include active($pokemon-dragon-light);
-  }
-  &--active#{&}--steel {
-    @include active($pokemon-steel-light);
-  }
-  &--active#{&}--flying {
-    @include active($pokemon-flying-light);
+  @each $type, $colors in $pokemon-types {
+    &--active#{&}--#{$type} {
+      @include active(nth($colors, 2));
+    }
   }
 }
 </style>

@@ -174,77 +174,11 @@ watchEffect(() => {
     height: 22px;
     background-color: $off-white;
     border-radius: $rounded-circle;
-    &--fire {
-      fill: $pokemon-fire;
-      background: $pokemon-fire-light;
-    }
-    &--grass {
-      fill: $pokemon-grass;
-      background: $pokemon-grass-light;
-    }
-    &--water {
-      fill: $pokemon-water;
-      background: $pokemon-water-light;
-    }
-    &--normal {
-      fill: $pokemon-normal;
-      background: $pokemon-normal-light;
-    }
-    &--poison {
-      fill: $pokemon-poison;
-      background: $pokemon-poison-light;
-    }
-    &--bug {
-      fill: $pokemon-bug;
-      background: $pokemon-bug-light;
-    }
-    &--ground {
-      fill: $pokemon-ground;
-      background: $pokemon-ground-light;
-    }
-    &--fighting {
-      fill: $pokemon-fighting;
-      background: $pokemon-fighting-light;
-    }
-    &--rock {
-      fill: $pokemon-rock;
-      background: $pokemon-rock-light;
-    }
-    &--electric {
-      fill: $pokemon-electric;
-      background: $pokemon-electric-light;
-    }
-    &--fairy {
-      fill: $pokemon-fairy;
-      background: $pokemon-fairy-light;
-    }
-    &--psychic {
-      fill: $pokemon-psychic;
-      background: $pokemon-psychic-light;
-    }
-    &--ghost {
-      fill: $pokemon-ghost;
-      background: $pokemon-ghost-light;
-    }
-    &--ice {
-      fill: $pokemon-ice;
-      background: $pokemon-ice-light;
-    }
-    &--dragon {
-      fill: $pokemon-dragon;
-      background: $pokemon-dragon-light;
-    }
-    &--steel {
-      fill: $pokemon-steel;
-      background: $pokemon-steel-light;
-    }
-    &--flying {
-      fill: $pokemon-flying;
-      background: $pokemon-flying-light;
-    }
-    &--dark {
-      fill: $pokemon-dark;
-      background: $pokemon-dark-light;
+    @each $type, $colors in $pokemon-types {
+      &--#{$type} {
+        fill: nth($colors, 1);
+        background: nth($colors, 2);
+      }
     }
   }
 }

@@ -95,3 +95,107 @@ $pokemon-dark-dark: darken($pokemon-dark, 40%);
 $pokemon-flying: #5a7894;
 $pokemon-flying-light: lighten($pokemon-flying, 40%);
 $pokemon-flying-dark: darken($pokemon-flying, 40%);
+
+$pokemon-types: (
+  fire: (
+    $pokemon-fire,
+    $pokemon-fire-light,
+    $pokemon-fire-dark,
+  ),
+  grass: (
+    $pokemon-grass,
+    $pokemon-grass-light,
+    $pokemon-grass-dark,
+  ),
+  water: (
+    $pokemon-water,
+    $pokemon-water-light,
+    $pokemon-water-dark,
+  ),
+  normal: (
+    $pokemon-normal,
+    $pokemon-normal-light,
+    $pokemon-normal-dark,
+  ),
+  poison: (
+    $pokemon-poison,
+    $pokemon-poison-light,
+    $pokemon-poison-dark,
+  ),
+  bug: (
+    $pokemon-bug,
+    $pokemon-bug-light,
+    $pokemon-bug-dark,
+  ),
+  ground: (
+    $pokemon-ground,
+    $pokemon-ground-light,
+    $pokemon-ground-dark,
+  ),
+  fighting: (
+    $pokemon-fighting,
+    $pokemon-fighting-light,
+    $pokemon-fighting-dark,
+  ),
+  rock: (
+    $pokemon-rock,
+    $pokemon-rock-light,
+    $pokemon-rock-dark,
+  ),
+  electric: (
+    $pokemon-electric,
+    $pokemon-electric-light,
+    $pokemon-electric-dark,
+  ),
+  fairy: (
+    $pokemon-fairy,
+    $pokemon-fairy-light,
+    $pokemon-fairy-dark,
+  ),
+  psychic: (
+    $pokemon-psychic,
+    $pokemon-psychic-light,
+    $pokemon-psychic-dark,
+  ),
+  ghost: (
+    $pokemon-ghost,
+    $pokemon-ghost-light,
+    $pokemon-ghost-dark,
+  ),
+  ice: (
+    $pokemon-ice,
+    $pokemon-ice-light,
+    $pokemon-ice-dark,
+  ),
+  dragon: (
+    $pokemon-dragon,
+    $pokemon-dragon-light,
+    $pokemon-dragon-dark,
+  ),
+  steel: (
+    $pokemon-steel,
+    $pokemon-steel-light,
+    $pokemon-steel-dark,
+  ),
+  dark: (
+    $pokemon-dark,
+    $pokemon-dark-light,
+    $pokemon-dark-dark,
+  ),
+  flying: (
+    $pokemon-flying,
+    $pokemon-flying-light,
+    $pokemon-flying-dark,
+  ),
+);
+
+@function pokemon-color($type, $variant: "base") {
+  $colors: map-get($pokemon-types, $type);
+  @if $variant == "light" {
+    @return nth($colors, 2);
+  }
+  @if $variant == "dark" {
+    @return nth($colors, 3);
+  }
+  @return nth($colors, 1);
+}

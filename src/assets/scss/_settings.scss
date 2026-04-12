@@ -12,6 +12,15 @@
   user-select: none; /* Standard syntax */
 }
 
+body {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  min-height: 100vh;
+}
+
 button {
   all: unset;
   touch-action: manipulation;
