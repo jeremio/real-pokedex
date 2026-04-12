@@ -37,7 +37,7 @@ const { activePokemon } = storeToRefs(pokeStore)
 const { isYoshView } = storeToRefs(controlsStore)
 
 const isLoading = ref(false)
-const sprites = ref([])
+const sprites = ref<string[]>([])
 
 const spritesSplit = computed(() => {
   if (isYoshView.value)
@@ -61,7 +61,7 @@ const scrollSpeed = computed(() => {
   return `${totalSprites * ratio}s`
 })
 
-function shuffleSprites(array) {
+function shuffleSprites(array: string[]) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]]

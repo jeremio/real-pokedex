@@ -80,7 +80,7 @@ const gridColumns = computed(() => {
   return `${halfCount}fr ${doubleCount}fr`
 })
 
-function handleFailure(e) {
+function handleFailure(e: unknown) {
   console.log({ e })
   hasError.value = true
 }

@@ -19,7 +19,10 @@
       />
     </div>
     <div v-if="isHelperOpen" class="pokedex-container__helper-wrapper">
-      <PikachuHelper class="pokedex-container__helper" @close="handleCloseHelper" />
+      <PikachuHelper
+        class="pokedex-container__helper"
+        @close="handleCloseHelper"
+      />
     </div>
   </div>
 </template>
@@ -33,8 +36,35 @@ import ThePokedex from '@/components/templates/ThePokedex.vue'
 import useControls from '@/composables/useControls.ts'
 
 const { handleMainControl } = useControls()
-const keysToListenTo = ['down', 'up', 'left', 'right', 'x', 'z', 'a', 's', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'p']
-const keysToBtnMap = { a: 'y', s: 'x', z: 'b', x: 'a', p: 'power', 0: '10' }
+const keysToListenTo = [
+  'down',
+  'up',
+  'left',
+  'right',
+  'x',
+  'z',
+  'a',
+  's',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '0',
+  'p',
+]
+const keysToBtnMap: Record<string, string> = {
+  a: 'y',
+  s: 'x',
+  z: 'b',
+  x: 'a',
+  p: 'power',
+  0: '10',
+}
 const isShiftedRight = ref(false)
 const isHelperOpen = ref(false)
 
@@ -69,7 +99,7 @@ onBeforeUnmount(() => {
   width: 100vw;
   margin: 0;
   background-color: $lightest-blue;
-  background-image: url('https://cdn.midjourney.com/d0490271-55cb-440d-93a4-7553025d9821/0_0.png');
+  background-image: url("https://cdn.midjourney.com/d0490271-55cb-440d-93a4-7553025d9821/0_0.png");
   background-position: left;
   background-repeat: no-repeat;
   background-size: cover;
