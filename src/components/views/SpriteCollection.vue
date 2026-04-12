@@ -27,6 +27,7 @@
 <script setup lang="ts">
 import type { IPokemonSpritesUpdated } from '@/types'
 import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
+import { yoshSpritesData } from '@/data/yosh.ts'
 import { useControlsStore } from '@/store/controls.ts'
 import { usePokeStore } from '@/store/pokemon.ts'
 

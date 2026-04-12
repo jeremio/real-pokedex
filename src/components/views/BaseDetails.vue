@@ -21,9 +21,6 @@
           We apologize, as some of {{ name }} details are missing 😞.
           Evolutions, moves, etc are still available.
         </span>
-        <template v-if="description">
-          {{ description.toLowerCase() }}.
-        </template>
         {{ flavorText }}
       </section>
       <p class="base-details__location">
@@ -60,7 +57,6 @@ const controlsStore = useControlsStore()
 const { activePokemon } = storeToRefs(pokeStore)
 const { isYoshView } = storeToRefs(controlsStore)
 
-const description = ref<string>('')
 const flavorText = ref<string>('')
 const genus = ref<string>('')
 const location = ref<string>('')
@@ -69,13 +65,7 @@ const encounter = ref<string>('')
 const { isLoading, executeFn } = useLoading(getData)
 
 const hasData = computed(() => {
-  return (
-    description.value
-    || flavorText.value
-    || genus.value
-    || location.value
-    || encounter.value
-  )
+  return flavorText.value || genus.value || location.value || encounter.value
 })
 
 const name = computed(() => {
@@ -117,18 +107,6 @@ async function getSpecies(payload: number) {
     })
 }
 
-async function getDescription(payload: number) {
-  await PokeAPI.Characteristic.resolve(payload)
-    .then((res: any) => {
-      description.value = res?.descriptions.find(
-        ({ language }) => language.name === 'en',
-      )?.description
-    })
-    .catch(async (_e) => {
-      description.value = ''
-    })
-}
-
 async function getLocation(payload: number) {
   await PokeAPI.LocationArea.resolve(payload)
     .then((res) => {
@@ -153,7 +131,6 @@ async function getEncounter(payload: number) {
 function getYoshData() {
   flavorText.value = yoshDetails.flavorText
   genus.value = yoshDetails.genus
-  description.value = yoshDetails.description
   encounter.value = yoshDetails.encounter
   location.value = yoshDetails.location
 }
@@ -164,7 +141,6 @@ async function getData(payload: number, isYosh: boolean) {
   }
   else if (payload) {
     await Promise.all([
-      getDescription(payload),
       getSpecies(payload),
       getLocation(payload),
       getEncounter(payload),
