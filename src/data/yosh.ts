@@ -161,12 +161,12 @@ export const yoshMoves: Record<'level-up' | 'machine', IMoveListItem[]> = {
 export const yoshSprites = {
   firstHalf: [
     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/512px-HTML5_logo_and_wordmark.svg.png?20170517184425',
-    'https://cdn.freebiesupply.com/logos/large/2x/css3-logo-png-transparent.png',
+    new URL('@/assets/images/logos/css3.png', import.meta.url).href,
     'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png',
     'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png',
     'https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png',
-    'https://www.pngall.com/wp-content/uploads/13/Pokemon-Logo-PNG-Pic.png',
-    'https://cdn.freebiesupply.com/logos/thumbs/2x/prettier-1-logo.png',
+    new URL('@/assets/images/pokemon_logo.png', import.meta.url).href,
+    new URL('@/assets/images/logos/prettier.png', import.meta.url).href,
   ],
   secondHalf: [
     'https://vuejs.org/images/logo.png',
