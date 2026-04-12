@@ -117,17 +117,6 @@ async function getLocation(payload: number) {
     })
 }
 
-async function getEncounter(payload: number) {
-  await PokeAPI.EncounterMethod.resolve(payload)
-    .then(({ names }) => {
-      const data = names?.find(({ language }) => language.name === 'en')
-      encounter.value = data?.name || ''
-    })
-    .catch((_e) => {
-      encounter.value = ''
-    })
-}
-
 function getYoshData() {
   flavorText.value = yoshDetails.flavorText
   genus.value = yoshDetails.genus
@@ -140,11 +129,7 @@ async function getData(payload: number, isYosh: boolean) {
     getYoshData()
   }
   else if (payload) {
-    await Promise.all([
-      getSpecies(payload),
-      getLocation(payload),
-      getEncounter(payload),
-    ])
+    await Promise.all([getSpecies(payload), getLocation(payload)])
   }
 }
 
