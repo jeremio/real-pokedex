@@ -209,7 +209,7 @@ export default function useControls() {
   function handleActiveBtn(command: string) {
     const timeToLeaveActive = 200
     setActiveBtn(command)
-    setTimeout(() => setActiveBtn(''), timeToLeaveActive)
+    setTimeout(setActiveBtn, timeToLeaveActive, '')
   }
 
   return {

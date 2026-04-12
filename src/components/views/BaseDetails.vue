@@ -64,9 +64,7 @@ const encounter = ref<string>('')
 
 const { isLoading, executeFn } = useLoading(getData)
 
-const hasData = computed(() => {
-  return flavorText.value || genus.value || location.value || encounter.value
-})
+const hasData = computed(() => flavorText.value || genus.value)
 
 const name = computed(() => {
   return isYoshView.value ? 'Professor Yosh' : activePokemon.value?.name
@@ -107,16 +105,6 @@ async function getSpecies(payload: number) {
     })
 }
 
-async function getLocation(payload: number) {
-  await PokeAPI.LocationArea.resolve(payload)
-    .then((res) => {
-      location.value = res.location.name.replaceAll('-', ' ')
-    })
-    .catch((_e) => {
-      location.value = ''
-    })
-}
-
 function getYoshData() {
   flavorText.value = yoshDetails.flavorText
   genus.value = yoshDetails.genus
@@ -129,7 +117,7 @@ async function getData(payload: number, isYosh: boolean) {
     getYoshData()
   }
   else if (payload) {
-    await Promise.all([getSpecies(payload), getLocation(payload)])
+    await getSpecies(payload)
   }
 }
 
