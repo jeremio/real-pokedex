@@ -62,12 +62,18 @@ const totalEvolutions = computed(() => {
   return evoChain.value?.length || 0
 })
 
+async function resolvePokemon(name: string) {
+  return PokeAPI.Pokemon.resolve(name).catch(() =>
+    PokeAPI.Pokemon.resolve(`${name}-normal`),
+  )
+}
+
 async function mapEvolutionsRecursively(
   chain: ChainLink,
   evolutions: IPokeEvolution[],
 ) {
   const { species, evolution_details, evolves_to } = chain
-  const pokemon = await PokeAPI.Pokemon.resolve(species.name)
+  const pokemon = await resolvePokemon(species.name)
   evolutions.push({ ...species, details: evolution_details, pokemon })
   if (!evolves_to.length)
     return evolutions
@@ -82,7 +88,7 @@ async function mapEvolutionsLinearly(
 ) {
   for (const evo of chain.evolves_to) {
     const { species, evolution_details } = evo
-    const pokemon = await PokeAPI.Pokemon.resolve(species.name)
+    const pokemon = await resolvePokemon(species.name)
     evolutions.push({
       ...species,
       details: evolution_details,
@@ -94,6 +100,7 @@ async function mapEvolutionsLinearly(
 }
 
 async function getEvoChain(id: number) {
+  evoChain.value = undefined
   const evolutions: IPokeEvolution[] = []
   const chainId = await PokeAPI.PokemonSpecies.resolve(id).then((res) => {
     return Number(res.evolution_chain.url.split('/')[6])
