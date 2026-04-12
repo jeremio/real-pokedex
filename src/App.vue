@@ -97,7 +97,7 @@ onBeforeUnmount(() => {
   width: 100vw;
   margin: 0;
   background-color: $lightest-blue;
-  background-image: url("https://cdn.midjourney.com/d0490271-55cb-440d-93a4-7553025d9821/0_0.png");
+  background-image: url("@/assets/images/app-bg.png");
   background-position: left;
   background-repeat: no-repeat;
   background-size: cover;
