@@ -1,17 +1,31 @@
 <template>
   <section class="main-menu">
-    <img class="main-menu__logo" src="../../assets/images/Pokedex_logo.png" alt="Pokedex logo">
+    <img
+      class="main-menu__logo"
+      src="../../assets/images/Pokedex_logo.png"
+      alt="Pokedex logo"
+    >
     <div class="main-menu__options">
-      <FrostCard v-for="option in menuOptions" :key="`menu-option__${option.label}`">
-        <div class="main-menu__option" :class="{ 'main-menu__option--active': menuPosition === option.id }">
+      <FrostCard
+        v-for="option in menuOptions"
+        :key="`menu-option__${option.label}`"
+      >
+        <div
+          class="main-menu__option"
+          :class="{ 'main-menu__option--active': menuPosition === option.id }"
+        >
           <p>{{ option.label }}</p>
-          <div v-if="option.sprites.length" class="main-menu__sprites" :class="`main-menu__sprites--${option.id}`">
+          <div
+            v-if="option.sprites.length"
+            class="main-menu__sprites"
+            :class="`main-menu__sprites--${option.id}`"
+          >
             <img
               v-for="{ src, alt } in option.sprites"
               :key="`menu-sprite__${alt}`"
               height="50px"
               width="50px"
-              :src="(src as string)"
+              :src="src as string"
               :alt="alt"
             >
           </div>
@@ -28,10 +42,37 @@ import { useControlsStore } from '@/store/controls.ts'
 const controlsStore = useControlsStore()
 const { menuPosition } = storeToRefs(controlsStore)
 
-const meUrl = new URL('/src/assets/images/BonzaiYoshProfessor.png', import.meta.url)
+const meUrl = new URL(
+  '/src/assets/images/BonzaiYoshProfessor.png',
+  import.meta.url,
+)
 const ashUrl = new URL('/src/assets/images/ashketchum.png', import.meta.url)
 const brockUrl = new URL('/src/assets/images/brock.png', import.meta.url)
 const mistyUrl = new URL('/src/assets/images/misty.png', import.meta.url)
+const pikachuUrl = new URL(
+  '/src/assets/images/sprites/menu/frlg-25.png',
+  import.meta.url,
+)
+const teddiursaUrl = new URL(
+  '/src/assets/images/sprites/menu/frlg-216.png',
+  import.meta.url,
+)
+const piplupUrl = new URL(
+  '/src/assets/images/sprites/menu/oa-813.png',
+  import.meta.url,
+)
+const bulbasaurUrl = new URL(
+  '/src/assets/images/sprites/menu/frlg-1.png',
+  import.meta.url,
+)
+const charmanderUrl = new URL(
+  '/src/assets/images/sprites/menu/frlg-4.png',
+  import.meta.url,
+)
+const squirtleUrl = new URL(
+  '/src/assets/images/sprites/menu/frlg-7.png',
+  import.meta.url,
+)
 
 const menuOptions = [
   {
@@ -39,15 +80,15 @@ const menuOptions = [
     label: 'Pokémon',
     sprites: [
       {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/25.png',
+        src: pikachuUrl,
         alt: 'pikachu',
       },
       {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/216.png',
+        src: teddiursaUrl,
         alt: 'Teddiursa',
       },
       {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/813.png',
+        src: piplupUrl,
         alt: 'Piplup',
       },
     ],
@@ -57,15 +98,15 @@ const menuOptions = [
     label: 'Generations',
     sprites: [
       {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/1.png',
+        src: bulbasaurUrl,
         alt: 'Bulbasaur',
       },
       {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/4.png',
+        src: charmanderUrl,
         alt: 'Charmander',
       },
       {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/7.png',
+        src: squirtleUrl,
         alt: 'Squirtle',
       },
     ],
@@ -125,7 +166,9 @@ const menuOptions = [
     border-radius: inherit;
     background-color: rgba($secondary, 0);
     color: rgba($off-black, 0.8);
-    transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
+    transition:
+      color 300ms ease-in-out,
+      background-color 300ms ease-in-out;
     p {
       font-weight: 600;
       transition: letter-spacing 300ms ease-in-out;
@@ -152,7 +195,9 @@ const menuOptions = [
     width: 70px;
     height: 100%;
     opacity: 0;
-    transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+    transition:
+      transform 300ms ease-in-out,
+      opacity 300ms ease-in-out;
     img {
       position: absolute;
       height: 50px;
