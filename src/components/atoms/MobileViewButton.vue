@@ -4,22 +4,20 @@
       <span class="mobile-btn__pokeball-center" :class="{ 'mobile-btn__pokeball-center--right': isShiftedRight }" />
       <span class="mobile-btn__copy">shift {{ isShiftedRight ? 'left' : 'right' }}</span>
     </p>
-    <img src="@/assets/images/pikachu.png" alt="pikachu" class="pikachu" :class="{ 'pikachu--show': hasClicked }" />
+    <img src="@/assets/images/pikachu.png" alt="pikachu" class="pikachu" :class="{ 'pikachu--show': hasClicked }">
   </button>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+defineProps<{ isShiftedRight: boolean }>()
 
-defineProps<{ isShiftedRight: boolean }>();
-
-const hasClicked = ref(false);
+const hasClicked = ref(false)
 
 function handleInternalClick() {
-  hasClicked.value = true;
+  hasClicked.value = true
   setTimeout(() => {
-    hasClicked.value = false;
-  }, 500);
+    hasClicked.value = false
+  }, 500)
 }
 </script>
 

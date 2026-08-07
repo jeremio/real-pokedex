@@ -1,15 +1,16 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import GlobalComponents from './globals.js';
-import App from './App.vue';
-import LogRocket from 'logrocket';
-import './assets/base.css';
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
+import App from './App.vue'
+import '@fontsource/montserrat/100.css'
+import '@fontsource/montserrat/300.css'
+import '@fontsource/montserrat/400.css'
+import '@fontsource/montserrat/600.css'
+import '@fontsource/open-sans/400.css'
+import '@fontsource/open-sans/600.css'
+import './assets/main.scss'
 
-const pinia = createPinia();
-const app = createApp(App);
+const pinia = createPinia()
+const app = createApp(App)
 
-LogRocket.init('m9fwpv/real-pokedex');
-
-app.use(GlobalComponents);
-app.use(pinia);
-app.mount('#app');
+app.use(pinia)
+app.mount('#app')

@@ -1,7 +1,7 @@
 <template>
   <section class="yosh">
     <div class="yosh__bg" />
-    <img src="@/assets/images/BonzaiYoshProfessor.png" alt="professor yosh" />
+    <img src="@/assets/images/BonzaiYoshProfessor.png" alt="professor yosh">
   </section>
 </template>
 
@@ -18,10 +18,10 @@
     right: 0;
     height: 100%;
     width: 100%;
-    content: '';
+    content: "";
     background-position: left bottom;
     background-size: cover;
-    background-image: url('https://cdn.midjourney.com/77285c68-abc5-4c91-adf1-e23f3d231a2e/0_0.png');
+    background-image: url("@/assets/images/backgrounds/prof-yosh-bg.png");
     opacity: 0.9;
   }
 

@@ -2,7 +2,7 @@
   <div class="loader">
     <p>Loading...</p>
     <div class="loader__pikachu">
-      <img src="https://c.tenor.com/2lFt6lp1KaMAAAAi/run-pokemon.gif" alt="pikachu" />
+      <img src="@/assets/images/pikachu-run.gif" alt="pikachu">
     </div>
   </div>
 </template>

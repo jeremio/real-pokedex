@@ -1,6 +1,6 @@
 <template>
   <div class="toast" :class="`toast--${isHeader ? 'title' : 'instructions'}`">
-    <component class="toast__content" :is="isHeader ? 'h1' : 'p'">
+    <component :is="isHeader ? 'h1' : 'p'" class="toast__content">
       <span v-if="btnCopy">{{ btnCopy }}</span>
       {{ copy }}
     </component>
@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
-  isHeader?: Boolean;
-  copy: string;
-  btnCopy?: string;
+interface IProps {
+  isHeader?: boolean
+  copy: string
+  btnCopy?: string
 }
-defineProps<Props>();
+defineProps<IProps>()
 </script>
 
 <style scoped lang="scss">

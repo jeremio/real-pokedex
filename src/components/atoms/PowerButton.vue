@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ isPokedexOn?: boolean }>();
+defineProps<{ isPokedexOn?: boolean }>()
 </script>
 
 <style scoped lang="scss">

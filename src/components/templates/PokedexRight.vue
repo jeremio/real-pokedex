@@ -2,7 +2,7 @@
   <section class="pokedex-right">
     <div class="pokedex-right__wrapper">
       <div class="pokedex-right__top">
-        <div class="pokedex-right__top-fill"></div>
+        <div class="pokedex-right__top-fill" />
       </div>
 
       <section class="pokedex-right__body">

@@ -5,7 +5,9 @@
       <section class="base-details__species-num">
         <p>{{ genus }}</p>
         <FrostCard>
-          <p class="base-details__national-num"><span>#</span>{{ entryNumber }}</p>
+          <p class="base-details__national-num">
+            <span>#</span>{{ entryNumber }}
+          </p>
         </FrostCard>
       </section>
 
@@ -14,137 +16,115 @@
           {{ name }}
         </span>
         <span v-if="!hasData">
-          <br />
-          <br />
-          We apologize, as some of {{ name }} details are missing 😞. Evolutions, moves, etc are still available.
+          <br>
+          <br>
+          We apologize, as some of {{ name }} details are missing 😞.
+          Evolutions, moves, etc are still available.
         </span>
-        <template v-if="description"> {{ description.toLowerCase() }}. </template>
         {{ flavorText }}
       </section>
       <p class="base-details__location">
-        <span v-if="encounter && location"> Located {{ encounter?.toLowerCase() }} near {{ location }}. </span>
+        <span v-if="encounter && location">
+          Located {{ encounter?.toLowerCase() }} near {{ location }}.
+        </span>
       </p>
 
       <div class="base-details__types">
-        <TypePill v-for="pokemonType in pokemonTypes" :key="pokemonType" :type="pokemonType" />
+        <TypePill
+          v-for="pokemonType in pokemonTypes"
+          :key="pokemonType"
+          :type="pokemonType"
+        />
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import PokeAPI, { type IPokemonSpecies } from 'pokeapi-typescript';
-import { computed, ref, watchEffect } from 'vue';
-import { usePokeStore } from '@/store/pokemon';
-import { useControlsStore } from '@/store/controls';
-import { storeToRefs } from 'pinia';
-import { useLoading } from '@/composables/useLoading';
+import type { PokemonSpecies } from 'pokeapi-typescript'
+import { PokeAPI } from 'pokeapi-typescript'
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
+import TypePill from '@/components/atoms/TypePill.vue'
+import { useLoading } from '@/composables/useLoading.ts'
+import { yoshDetails, yoshTypes } from '@/data/yosh.ts'
+import { useControlsStore } from '@/store/controls.ts'
+import { usePokeStore } from '@/store/pokemon.ts'
 
-const pokeStore = usePokeStore();
-const controlsStore = useControlsStore();
+const pokeStore = usePokeStore()
+const controlsStore = useControlsStore()
 
-const { activePokemon } = storeToRefs(pokeStore);
-const { isYoshView } = storeToRefs(controlsStore);
+const { activePokemon } = storeToRefs(pokeStore)
+const { isYoshView } = storeToRefs(controlsStore)
 
-const description = ref<string>('');
-const flavorText = ref<string>('');
-const genus = ref<string>('');
-const location = ref<string>('');
-const encounter = ref<string>('');
+const flavorText = ref<string>('')
+const genus = ref<string>('')
+const location = ref<string>('')
+const encounter = ref<string>('')
 
-const { isLoading, executeFn } = useLoading(getData);
+const { isLoading, executeFn } = useLoading(getData)
 
-const hasData = computed(() => {
-  return description.value || flavorText.value || genus.value || location.value || encounter.value;
-});
+const hasData = computed(() => flavorText.value || genus.value)
 
 const name = computed(() => {
-  return isYoshView.value ? 'Professor Yosh' : activePokemon.value?.name;
-});
+  return isYoshView.value ? 'Professor Yosh' : activePokemon.value?.name
+})
 
 const entryNumber = computed(() => {
-  if (isYoshView.value) return '305';
-  let num = String(activePokemon.value?.id || 0);
-  while (num.length < 3) num = '0' + num;
-  return num;
-});
+  if (isYoshView.value)
+    return '305'
+  let num = String(activePokemon.value?.id || 0)
+  while (num.length < 3) num = `0${num}`
+  return num
+})
 
 const pokemonTypes = computed(() => {
-  if (isYoshView.value) return ['grass', 'dragon'];
-  return activePokemon.value?.types.map(({ type }) => type.name) || ['normal'];
-});
+  if (isYoshView.value)
+    return yoshTypes
+  return activePokemon.value?.types.map(({ type }) => type.name) || ['normal']
+})
 
-function getFlavortText(species: IPokemonSpecies) {
-  const textEntries = species?.flavor_text_entries;
-  const textEntry = textEntries?.find(({ language }) => language.name == 'en');
-  return textEntry?.flavor_text || '';
+function getFlavortText(species: PokemonSpecies) {
+  const textEntries = species?.flavor_text_entries
+  const textEntry = textEntries?.find(({ language }) => language.name === 'en')
+  return textEntry?.flavor_text || ''
 }
 
-function getGenus({ genera }: IPokemonSpecies) {
-  return genera?.find(({ language }) => language.name == 'en')?.genus || '';
+function getGenus({ genera }: PokemonSpecies) {
+  return genera?.find(({ language }) => language.name === 'en')?.genus || ''
 }
 
 async function getSpecies(payload: number) {
   await PokeAPI.PokemonSpecies.resolve(payload)
     .then((res) => {
-      flavorText.value = getFlavortText(res);
-      genus.value = getGenus(res);
+      flavorText.value = getFlavortText(res)
+      genus.value = getGenus(res)
     })
     .catch((_e) => {
-      flavorText.value = '';
-    });
-}
-
-async function getDescription(payload: number) {
-  await PokeAPI.Characteristic.resolve(payload)
-    .then((res: any) => {
-      description.value = res?.descriptions.find(({ language }) => language.name === 'en')?.description;
+      flavorText.value = ''
     })
-    .catch(async (_e) => {
-      description.value = '';
-    });
-}
-
-async function getLocation(payload: number) {
-  await PokeAPI.LocationArea.resolve(payload)
-    .then((res) => {
-      location.value = res.location.name.replace('-', ' ');
-    })
-    .catch((_e) => {
-      location.value = '';
-    });
-}
-
-async function getEncounter(payload: number) {
-  await PokeAPI.EncounterMethod.resolve(payload)
-    .then(({ names }) => {
-      const data = names?.find(({ language }) => language.name == 'en');
-      encounter.value = data?.name || '';
-    })
-    .catch((_e) => {
-      encounter.value = '';
-    });
 }
 
 function getYoshData() {
-  flavorText.value =
-    "If he's not spending time with his wife & daughter then you can find him either gardening or building cool new Vue apps";
-  genus.value = 'Pokédex creator ';
-  description.value = 'Loves tacos and pineapple pizza';
-  encounter.value = 'at his desk working too much or gardening';
-  location.value = 'sunny south Florida';
+  flavorText.value = yoshDetails.flavorText
+  genus.value = yoshDetails.genus
+  encounter.value = yoshDetails.encounter
+  location.value = yoshDetails.location
 }
 
 async function getData(payload: number, isYosh: boolean) {
-  if (isYosh) getYoshData();
-  else if (!payload) return;
-  else await Promise.all([getDescription(payload), getSpecies(payload), getLocation(payload), getEncounter(payload)]);
+  if (isYosh) {
+    getYoshData()
+  }
+  else if (payload) {
+    await getSpecies(payload)
+  }
 }
 
 watchEffect(() => {
-  const payload = activePokemon.value?.id || 0;
-  executeFn(payload, isYoshView.value);
-});
+  const payload = activePokemon.value?.id || 0
+  executeFn(payload, isYoshView.value)
+})
 </script>
 
 <style scoped lang="scss">

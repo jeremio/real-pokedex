@@ -3,16 +3,16 @@
     class="pokemon-tile"
     :class="[
       {
-        'pokemon-tile--active': isActive
+        'pokemon-tile--active': isActive,
       },
-      `pokemon-tile--${pokemonType}`
+      `pokemon-tile--${pokemonType}`,
     ]"
   >
     <div
       class="pokemon-tile__image-container"
       :class="{
         'pokemon-tile__image-container--loading': isLoading,
-        'pokemon-tile__image-container--shrink': isPokemonTooBig
+        'pokemon-tile__image-container--shrink': isPokemonTooBig,
       }"
     >
       <img
@@ -20,65 +20,63 @@
         :src="gifImage"
         alt="gif image"
         class="pokemon-tile__gif"
-        @load="handleLoadedImage"
         loading="lazy"
-      />
+        @load="handleLoadedImage"
+      >
       <img
         v-show="!isGifVisible"
         :src="spriteImage"
         alt="pokemon sprite"
         class="pokemon-tile__sprite"
-        :class="{ 'pokemon-tile__sprite--backup-active': isActive && !gifImage }"
+        :class="{
+          'pokemon-tile__sprite--backup-active': isActive && !gifImage,
+        }"
         height="64px"
         width="64px"
-        @load="handleLoadedImage"
         loading="lazy"
-      />
+        @load="handleLoadedImage"
+      >
     </div>
     <span class="pokemon-tile__name">{{ name }}</span>
   </article>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import PokeAPI from 'pokeapi-typescript';
-import type { IPokemonUpdated } from '@/types';
+import type { IPokemonTile, IPokemonUpdated } from '@/types'
+import { PokeAPI } from 'pokeapi-typescript'
 
-interface IPokemonTile {
-  name: string;
-  isActive: boolean;
-  genNum: number;
-  id: number;
+const props = defineProps<IPokemonTile>()
+const pokemon = ref<IPokemonUpdated>()
+const isLoading = ref(false)
+
+const spriteImage = computed(
+  () =>
+    pokemon?.value?.sprites?.front_default
+    || pokemon?.value?.sprites.other['official-artwork']?.front_default,
+)
+const gifImage = computed(
+  () =>
+    pokemon?.value?.sprites?.versions['generation-v']['black-white']?.animated
+      ?.front_default,
+)
+const isGifVisible = computed(() => {
+  return props.isActive && gifImage.value
+})
+
+const pokemonType = computed(() => pokemon?.value?.types[0].type.name)
+
+const isPokemonTooBig = computed(() => (pokemon.value?.height || 0) > 11)
+
+function handleLoadedImage() {
+  isLoading.value = false
 }
 
-const props = defineProps<IPokemonTile>();
-const pokemon = ref<IPokemonUpdated>();
-const isLoading = ref(false);
-
-const isGifVisible = computed(() => {
-  return props.isActive && gifImage.value;
-});
-const spriteImage = computed(
-  () => pokemon?.value?.sprites?.front_default || pokemon?.value?.sprites.other['official-artwork']?.front_default
-);
-const gifImage = computed(
-  () => pokemon?.value?.sprites?.versions['generation-v']['black-white']?.animated?.front_default
-);
-
-const pokemonType = computed(() => pokemon?.value?.types[0].type.name);
-
-const isPokemonTooBig = computed(() => (pokemon.value?.height || 0) > 11);
-
-const handleLoadedImage = () => {
-  isLoading.value = false;
-};
-
 onMounted(async () => {
-  isLoading.value = true;
+  isLoading.value = true
   await PokeAPI.Pokemon.resolve(props.id).then((res) => {
-    pokemon.value = res as IPokemonUpdated;
-  });
-});
+    pokemon.value = res as IPokemonUpdated
+  })
+})
 </script>
 
 <style scoped lang="scss">
@@ -168,56 +166,10 @@ onMounted(async () => {
     opacity: 1;
   }
 
-  &--active#{&}--fire {
-    @include active($pokemon-fire-light);
-  }
-  &--active#{&}--grass {
-    @include active($pokemon-grass-light);
-  }
-  &--active#{&}--water {
-    @include active($pokemon-water-light);
-  }
-  &--active#{&}--normal {
-    @include active($pokemon-normal-light);
-  }
-  &--active#{&}--poison {
-    @include active($pokemon-poison-light);
-  }
-  &--active#{&}--bug {
-    @include active($pokemon-bug-light);
-  }
-  &--active#{&}--ground {
-    @include active($pokemon-ground-light);
-  }
-  &--active#{&}--fighting {
-    @include active($pokemon-fighting-light);
-  }
-  &--active#{&}--rock {
-    @include active($pokemon-rock-light);
-  }
-  &--active#{&}--electric {
-    @include active($pokemon-electric-light);
-  }
-  &--active#{&}--fairy {
-    @include active($pokemon-fairy-light);
-  }
-  &--active#{&}--psychic {
-    @include active($pokemon-psychic-light);
-  }
-  &--active#{&}--ghost {
-    @include active($pokemon-ghost-light);
-  }
-  &--active#{&}--ice {
-    @include active($pokemon-ice-light);
-  }
-  &--active#{&}--dragon {
-    @include active($pokemon-dragon-light);
-  }
-  &--active#{&}--steel {
-    @include active($pokemon-steel-light);
-  }
-  &--active#{&}--flying {
-    @include active($pokemon-flying-light);
+  @each $type, $colors in $pokemon-types {
+    &--active#{&}--#{$type} {
+      @include active(nth($colors, 2));
+    }
   }
 }
 </style>

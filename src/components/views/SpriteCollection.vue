@@ -3,13 +3,21 @@
     <PikachuLoader v-if="isLoading && !isYoshView" />
     <div v-else class="sprite-collection__container">
       <div class="sprite-collection__sprites">
-        <div class="sprite-collection__sprite" v-for="sprite in spritesSplit.firstHalf" :key="sprite">
-          <img :src="sprite" />
+        <div
+          v-for="sprite in spritesSplit.firstHalf"
+          :key="sprite"
+          class="sprite-collection__sprite"
+        >
+          <img :src="sprite" alt="sprite">
         </div>
       </div>
       <div class="sprite-collection__sprites">
-        <div class="sprite-collection__sprite" v-for="sprite in spritesSplit.secondHalf" :key="sprite">
-          <img :src="sprite" />
+        <div
+          v-for="sprite in spritesSplit.secondHalf"
+          :key="sprite"
+          class="sprite-collection__sprite"
+        >
+          <img :src="sprite" alt="sprite">
         </div>
       </div>
     </div>
@@ -17,100 +25,89 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { usePokeStore } from '@/store/pokemon';
-import { storeToRefs } from 'pinia';
-import type { IPokemonSpritesUpdated } from '@/types';
-import { useControlsStore } from '@/store/controls';
+import type { IPokemonSpritesUpdated } from '@/types'
+import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
+import { yoshSprites as yoshSpritesData } from '@/data/yosh.ts'
+import { useControlsStore } from '@/store/controls.ts'
+import { usePokeStore } from '@/store/pokemon.ts'
 
-const pokeStore = usePokeStore();
-const controlsStore = useControlsStore();
+const pokeStore = usePokeStore()
+const controlsStore = useControlsStore()
 
-const { activePokemon } = storeToRefs(pokeStore);
-const { isYoshView } = storeToRefs(controlsStore);
+const { activePokemon } = storeToRefs(pokeStore)
+const { isYoshView } = storeToRefs(controlsStore)
 
-const isLoading = ref(false);
-const sprites = ref([]);
-
-const yoshSprites = {
-  firstHalf: [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/512px-HTML5_logo_and_wordmark.svg.png?20170517184425',
-    'https://cdn.freebiesupply.com/logos/large/2x/css3-logo-png-transparent.png',
-    'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png',
-    'https://www.pngall.com/wp-content/uploads/13/Pokemon-Logo-PNG-Pic.png',
-    'https://cdn.freebiesupply.com/logos/thumbs/2x/prettier-1-logo.png'
-  ],
-  secondHalf: [
-    'https://vuejs.org/images/logo.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vitejs-logo.svg/1039px-Vitejs-logo.svg.png',
-    'https://pinia.vuejs.org/logo.svg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Sass_Logo_Color.svg/2560px-Sass_Logo_Color.svg.png',
-    'https://seeklogo.com/images/S/segment-logo-FCBB33F58E-seeklogo.com.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/ESLint_logo.svg/1200px-ESLint_logo.svg.png'
-  ]
-};
+const isLoading = ref(false)
+const sprites = ref<string[]>([])
 
 const spritesSplit = computed(() => {
-  if (isYoshView.value) return yoshSprites;
-  if (!sprites.value) return { firstHalf: [], secondHalf: [] };
-  const middleIndex = Math.ceil(sprites.value.length / 2);
-  const firstHalf = sprites.value.slice(0, middleIndex);
-  const secondHalf = sprites.value.slice(-middleIndex);
-  return { firstHalf, secondHalf };
-});
+  if (isYoshView.value)
+    return yoshSpritesData
+  if (!sprites.value)
+    return { firstHalf: [], secondHalf: [] }
+  const middleIndex = Math.ceil(sprites.value.length / 2)
+  const firstHalf = sprites.value.slice(0, middleIndex)
+  const secondHalf = sprites.value.slice(-middleIndex)
+  return { firstHalf, secondHalf }
+})
 
 const scrollSpeed = computed(() => {
-  const ratio = 1.558;
-  const totalYoshSprites = yoshSprites.firstHalf.length + yoshSprites.secondHalf.length;
-  const totalPokemonSprites = sprites.value.length;
-  const totalSprites = isYoshView.value ? totalYoshSprites : totalPokemonSprites;
-  return `${totalSprites * ratio}s`;
-});
+  const ratio = 1.558
+  const totalYoshSprites
+    = yoshSpritesData.firstHalf.length + yoshSpritesData.secondHalf.length
+  const totalPokemonSprites = sprites.value.length
+  const totalSprites = isYoshView.value
+    ? totalYoshSprites
+    : totalPokemonSprites
+  return `${totalSprites * ratio}s`
+})
 
-function shuffleSprites(array) {
+function shuffleSprites(array: string[]) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [array[i], array[j]] = [array[j], array[i]]
   }
-  return array;
+  return array
 }
 
-function extractSprites(sprites: IPokemonSpritesUpdated, spritesArray: string[]) {
+function extractSprites(
+  sprites: IPokemonSpritesUpdated,
+  spritesArray: string[],
+) {
   for (const key in sprites) {
     if (key in sprites) {
-      const value = sprites[key];
+      const value = sprites[key]
       if (typeof value === 'string' && value !== '') {
-        spritesArray.push(value);
-      } else if (typeof value === 'object') {
-        extractSprites(value, spritesArray);
+        spritesArray.push(value)
+      }
+      else if (typeof value === 'object') {
+        extractSprites(value, spritesArray)
       }
     }
   }
 }
 
 function duplicateSprites(sprites: string[]) {
-  const originalLength = sprites.length;
-  const minimumSpritesNeeded = 50;
+  const originalLength = sprites.length
+  const minimumSpritesNeeded = 50
   while (sprites.length < minimumSpritesNeeded) {
-    sprites.push(...sprites.slice(0, originalLength));
+    sprites.push(...sprites.slice(0, originalLength))
   }
-  return sprites;
+  return sprites
 }
 
 watch(
   activePokemon,
   (pokemon) => {
-    if (!pokemon?.sprites) return;
-    const spritesArray = [];
-    extractSprites(pokemon.sprites as IPokemonSpritesUpdated, spritesArray);
-    const spritesToShuffle = duplicateSprites(spritesArray);
-    sprites.value = shuffleSprites(spritesToShuffle);
+    if (!pokemon?.sprites)
+      return
+    const spritesArray = []
+    extractSprites(pokemon.sprites as IPokemonSpritesUpdated, spritesArray)
+    const spritesToShuffle = duplicateSprites(spritesArray)
+    sprites.value = shuffleSprites(spritesToShuffle)
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 </script>
 
 <style scoped lang="scss">

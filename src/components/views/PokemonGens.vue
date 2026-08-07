@@ -1,19 +1,33 @@
 <template>
   <section class="gens">
     <div class="gens__options">
-      <FrostCard v-for="option in menuOptions" :key="`gen-option__${option.region}`">
-        <div class="gens__option" :class="{ 'gens__option--active': option.id === gensPosition + 1 }">
-          <p class="gens__gen-num">{{ option.id }}</p>
-          <p class="gens__region">{{ option.region }}</p>
-          <div v-if="option.sprites.length" class="gens__sprites" :class="`gens__sprites--${option.id}`">
+      <FrostCard
+        v-for="option in menuOptions"
+        :key="`gen-option__${option.region}`"
+      >
+        <div
+          class="gens__option"
+          :class="{ 'gens__option--active': option.id === gensPosition + 1 }"
+        >
+          <p class="gens__gen-num">
+            {{ option.id }}
+          </p>
+          <p class="gens__region">
+            {{ option.region }}
+          </p>
+          <div
+            v-if="option.sprites.length"
+            class="gens__sprites"
+            :class="`gens__sprites--${option.id}`"
+          >
             <img
               v-for="{ src, alt } in option.sprites"
               :key="`menu-sprite__${alt}`"
               height="50px"
               width="50px"
-              :src="(src as string)"
+              :src="src as string"
               :alt="alt"
-            />
+            >
           </div>
         </div>
       </FrostCard>
@@ -22,176 +36,103 @@
 </template>
 
 <script setup lang="ts">
-import { useControlsStore } from '@/store/controls';
-import { storeToRefs } from 'pinia';
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import { useControlsStore } from '@/store/controls.ts'
 
-const controlsStore = useControlsStore();
-const { gensPosition } = storeToRefs(controlsStore);
+const controlsStore = useControlsStore()
+const { gensPosition } = storeToRefs(controlsStore)
+
+const spriteModules = import.meta.glob<string>(
+  '@/assets/images/sprites/gens/*.png',
+  { eager: true, import: 'default', query: '?url' },
+)
+function sprite(id: number) {
+  return spriteModules[`/src/assets/images/sprites/gens/${id}.png`]
+}
 
 const menuOptions = [
   {
     id: 1,
     region: 'Kanto',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
-        alt: 'Bulbasaur'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png',
-        alt: 'Charmander'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png',
-        alt: 'Squirtle'
-      }
-    ]
+      { src: sprite(1), alt: 'Bulbasaur' },
+      { src: sprite(4), alt: 'Charmander' },
+      { src: sprite(7), alt: 'Squirtle' },
+    ],
   },
   {
     id: 2,
     region: 'Johto',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/152.png',
-        alt: 'Chikorita'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/155.png',
-        alt: 'Cyndaquil'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/158.png',
-        alt: 'Totodile'
-      }
-    ]
+      { src: sprite(152), alt: 'Chikorita' },
+      { src: sprite(155), alt: 'Cyndaquil' },
+      { src: sprite(158), alt: 'Totodile' },
+    ],
   },
   {
     id: 3,
     region: 'Hoenn',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/252.png',
-        alt: 'Treeko'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/255.png',
-        alt: 'Torchic'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/258.png',
-        alt: 'Mudkip'
-      }
-    ]
+      { src: sprite(252), alt: 'Treeko' },
+      { src: sprite(255), alt: 'Torchic' },
+      { src: sprite(258), alt: 'Mudkip' },
+    ],
   },
   {
     id: 4,
     region: 'Sinnoh',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/387.png',
-        alt: 'Turtwig'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/390.png',
-        alt: 'Chimchar'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/393.png',
-        alt: 'Piplup'
-      }
-    ]
+      { src: sprite(387), alt: 'Turtwig' },
+      { src: sprite(390), alt: 'Chimchar' },
+      { src: sprite(393), alt: 'Piplup' },
+    ],
   },
   {
     id: 5,
     region: 'Unova',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/495.png',
-        alt: 'Snivy'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/498.png',
-        alt: 'Tepig'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/501.png',
-        alt: 'Oshawott'
-      }
-    ]
+      { src: sprite(495), alt: 'Snivy' },
+      { src: sprite(498), alt: 'Tepig' },
+      { src: sprite(501), alt: 'Oshawott' },
+    ],
   },
   {
     id: 6,
     region: 'Kalos',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/650.png',
-        alt: 'Chespin'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/653.png',
-        alt: 'Fennekin'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/656.png',
-        alt: 'Froakie'
-      }
-    ]
+      { src: sprite(650), alt: 'Chespin' },
+      { src: sprite(653), alt: 'Fennekin' },
+      { src: sprite(656), alt: 'Froakie' },
+    ],
   },
   {
     id: 7,
     region: 'Alola',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/722.png',
-        alt: 'Rowlet'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/725.png',
-        alt: 'Litten'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/728.png',
-        alt: 'Popplio'
-      }
-    ]
+      { src: sprite(722), alt: 'Rowlet' },
+      { src: sprite(725), alt: 'Litten' },
+      { src: sprite(728), alt: 'Popplio' },
+    ],
   },
   {
     id: 8,
     region: 'Galar',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/810.png',
-        alt: 'Grookey'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/813.png',
-        alt: 'Scorbunny'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/816.png',
-        alt: 'Sobble'
-      }
-    ]
+      { src: sprite(810), alt: 'Grookey' },
+      { src: sprite(813), alt: 'Scorbunny' },
+      { src: sprite(816), alt: 'Sobble' },
+    ],
   },
   {
     id: 9,
     region: 'Paldea',
     sprites: [
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/906.png',
-        alt: 'Sprigatito'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/909.png',
-        alt: 'Fuecoco'
-      },
-      {
-        src: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/912.png',
-        alt: 'Quaxly'
-      }
-    ]
-  }
-];
+      { src: sprite(906), alt: 'Sprigatito' },
+      { src: sprite(909), alt: 'Fuecoco' },
+      { src: sprite(912), alt: 'Quaxly' },
+    ],
+  },
+]
 </script>
 
 <style scoped lang="scss">
@@ -217,7 +158,9 @@ const menuOptions = [
     border-radius: inherit;
     color: rgba($off-black, 0.7);
     background-color: rgba($secondary, 0);
-    transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
+    transition:
+      color 300ms ease-in-out,
+      background-color 300ms ease-in-out;
     overflow: hidden;
 
     &--active {
@@ -264,7 +207,9 @@ const menuOptions = [
     width: 52%;
     height: 100%;
     opacity: 0;
-    transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+    transition:
+      transform 300ms ease-in-out,
+      opacity 300ms ease-in-out;
 
     img {
       position: absolute;

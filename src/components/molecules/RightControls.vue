@@ -4,9 +4,9 @@
       <BlueButton
         v-for="i in 10"
         :key="`blue-btn-${i}`"
-        @click="handleBtnClick(i)"
         :copy="i"
-        :isActive="activeBtn === String(i)"
+        :is-active="activeBtn === String(i)"
+        @click="handleBtnClick(i)"
       >
         {{ i }}
       </BlueButton>
@@ -15,16 +15,16 @@
 </template>
 
 <script setup lang="ts">
-import { useControlsStore } from '@/store/controls';
-import useControls from '@/composables/useControls';
-import { storeToRefs } from 'pinia';
+import BlueButton from '@/components/atoms/BlueButton.vue'
+import useControls from '@/composables/useControls.ts'
+import { useControlsStore } from '@/store/controls.ts'
 
-const { handleMainControl } = useControls();
-const controlsStore = useControlsStore();
-const { activeBtn } = storeToRefs(controlsStore);
+const { handleMainControl } = useControls()
+const controlsStore = useControlsStore()
+const { activeBtn } = storeToRefs(controlsStore)
 
 function handleBtnClick(command: number) {
-  handleMainControl(String(command));
+  handleMainControl(String(command))
 }
 </script>
 

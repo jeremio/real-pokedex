@@ -3,9 +3,13 @@
     <div class="evo-chain__card">
       <PikachuLoader v-if="isLoading && !isYoshView" />
       <div v-else-if="isYoshView" class="evo-chain__pokemons">
-        <div v-for="(yosh, index) in yoshs" :key="`yosh-evo--${index}`" class="evo-chain__yosh">
+        <div
+          v-for="(yosh, index) in yoshs"
+          :key="`yosh-evo--${index}`"
+          class="evo-chain__yosh"
+        >
           <p>{{ yosh.level }}</p>
-          <img :src="(yosh.img as unknown as string)" :alt="yosh.name" />
+          <img :src="yosh.img as unknown as string" :alt="yosh.name">
           <FrostCard>
             <label>{{ yosh.name }}</label>
           </FrostCard>
@@ -17,7 +21,7 @@
         class="evo-chain__pokemons"
         :class="{
           'evo-chain__pokemons--single': totalEvolutions === 1,
-          'evo-chain__pokemons--multiple-rows': totalEvolutions > 4
+          'evo-chain__pokemons--multiple-rows': totalEvolutions > 4,
         }"
       >
         <EvolutionCard
@@ -32,90 +36,92 @@
 </template>
 
 <script setup lang="ts">
-import { usePokeStore } from '@/store/pokemon';
-import { storeToRefs } from 'pinia';
-import { watchEffect, ref, computed } from 'vue';
-import PokeAPI, { type IChainLink, type IEvolutionDetail, type IPokemon } from 'pokeapi-typescript';
-import { useLoading } from '@/composables/useLoading';
-import { useControlsStore } from '@/store/controls';
+import type { ChainLink } from 'pokeapi-typescript'
+import type { IPokeEvolution } from '@/types'
+import { PokeAPI } from 'pokeapi-typescript'
+import EvolutionCard from '@/components/atoms/EvolutionCard.vue'
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import PikachuLoader from '@/components/atoms/PikachuLoader.vue'
+import { useLoading } from '@/composables/useLoading.ts'
+import { yoshEvolutions } from '@/data/yosh.ts'
+import { useControlsStore } from '@/store/controls.ts'
+import { usePokeStore } from '@/store/pokemon.ts'
 
-const controlsStore = useControlsStore();
-const { isYoshView } = storeToRefs(controlsStore);
+const controlsStore = useControlsStore()
+const { isYoshView } = storeToRefs(controlsStore)
 
-const { isLoading, executeFn } = useLoading(getEvoChain);
+const { isLoading, executeFn } = useLoading(getEvoChain)
 
-const childYoshUrl = new URL('/src/assets/images/BonzaiYoshChild.png', import.meta.url);
-const youngYoshUrl = new URL('/src/assets/images/BonzaiYoshYoung.png', import.meta.url);
-const professorYoshUrl = new URL('/src/assets/images/BonzaiYoshProfessor.png', import.meta.url);
+const yoshs = yoshEvolutions
 
-const yoshs = [
-  { name: 'Child Yosh', img: childYoshUrl, level: '9 years' },
-  { name: 'Young Yosh', img: youngYoshUrl, level: '27 years' },
-  { name: 'Prof. Yosh', img: professorYoshUrl, level: '45 years' }
-];
-
-interface IPokeEvolution {
-  name: string;
-  url: string;
-  details: IEvolutionDetail[];
-  pokemon: IPokemon;
-  isNonLinear?: boolean;
-}
-
-const pokeStore = usePokeStore();
-const { activePokemonId } = storeToRefs(pokeStore);
-const evoChain = ref<IPokeEvolution[]>();
+const pokeStore = usePokeStore()
+const { activePokemonId } = storeToRefs(pokeStore)
+const evoChain = ref<IPokeEvolution[]>()
 
 const totalEvolutions = computed(() => {
-  return evoChain.value?.length || 0;
-});
+  return evoChain.value?.length || 0
+})
 
-async function mapEvolutionsRecursively(chain: IChainLink, evolutions: IPokeEvolution[]) {
-  const { species, evolution_details, evolves_to } = chain;
-  const pokemon = await PokeAPI.Pokemon.resolve(species.name);
-  evolutions.push({ ...species, details: evolution_details, pokemon });
-  if (!evolves_to.length) return evolutions;
-  const nextChain = evolves_to[0];
-  await mapEvolutionsRecursively(nextChain, evolutions);
-  return evolutions;
+async function resolvePokemon(name: string) {
+  return PokeAPI.Pokemon.resolve(name).catch(() =>
+    PokeAPI.Pokemon.resolve(`${name}-normal`),
+  )
 }
 
-async function mapEvolutionsLinearly(chain: IChainLink, evolutions: IPokeEvolution[]) {
-  chain.evolves_to.forEach(async (evo) => {
-    const { species, evolution_details } = evo;
-    const pokemon = await PokeAPI.Pokemon.resolve(species.name);
+async function mapEvolutionsRecursively(
+  chain: ChainLink,
+  evolutions: IPokeEvolution[],
+) {
+  const { species, evolution_details, evolves_to } = chain
+  const pokemon = await resolvePokemon(species.name)
+  evolutions.push({ ...species, details: evolution_details, pokemon })
+  if (!evolves_to.length)
+    return evolutions
+  const nextChain = evolves_to[0]
+  await mapEvolutionsRecursively(nextChain, evolutions)
+  return evolutions
+}
+
+async function mapEvolutionsLinearly(
+  chain: ChainLink,
+  evolutions: IPokeEvolution[],
+) {
+  for (const evo of chain.evolves_to) {
+    const { species, evolution_details } = evo
+    const pokemon = await resolvePokemon(species.name)
     evolutions.push({
       ...species,
       details: evolution_details,
       pokemon,
-      isNonLinear: true
-    });
-  });
-  return evolutions;
+      isNonLinear: true,
+    })
+  }
+  return evolutions
 }
 
 async function getEvoChain(id: number) {
-  const evolutions: IPokeEvolution[] = [];
+  evoChain.value = undefined
+  const evolutions: IPokeEvolution[] = []
   const chainId = await PokeAPI.PokemonSpecies.resolve(id).then((res) => {
-    return Number(res.evolution_chain.url.split('/')[6]);
-  });
+    return Number(res.evolution_chain.url.split('/')[6])
+  })
   try {
-    // hacky test, meowth has a weird evo chain and it breaks the view
-    evoChain.value = await PokeAPI.EvolutionChain.resolve(chainId).then(async ({ chain }) =>
-      chain.evolves_to.length > 2
-        ? await mapEvolutionsLinearly(chain, evolutions)
-        : await mapEvolutionsRecursively(chain, evolutions)
-    );
-  } catch (e) {
-    // do something meaningfull
-    console.log({ e });
+    evoChain.value = await PokeAPI.EvolutionChain.resolve(chainId).then(
+      async ({ chain }) =>
+        chain.evolves_to.length > 2
+          ? await mapEvolutionsLinearly(chain, evolutions)
+          : await mapEvolutionsRecursively(chain, evolutions),
+    )
+  }
+  catch (e) {
+    console.log({ e })
   }
 }
 
 watchEffect(async () => {
-  const payload = activePokemonId.value || 1;
-  await executeFn(payload);
-});
+  const payload = activePokemonId.value || 1
+  await executeFn(payload)
+})
 </script>
 
 <style scoped lang="scss">

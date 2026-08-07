@@ -5,12 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import { usePokeStore } from '@/store/pokemon';
-import { storeToRefs } from 'pinia';
+import { usePokeStore } from '@/store/pokemon.ts'
 
-const pokeStore = usePokeStore();
+const pokeStore = usePokeStore()
 
-const { isLoading } = storeToRefs(pokeStore);
+const { isLoading } = storeToRefs(pokeStore)
 </script>
 
 <style scoped lang="scss">

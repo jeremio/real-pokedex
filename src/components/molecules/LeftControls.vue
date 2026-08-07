@@ -6,21 +6,21 @@
         :key="`arrow-btn-${btn}`"
         :class="`d-pad__${btn}`"
         :variant="btn"
-        :isActive="activeBtn === btn"
+        :is-active="activeBtn === btn"
         @click="handleMainControl(btn)"
       />
     </div>
     <div class="middle-controls">
       <VolumeButton @click="handleMainControl('volume-down')" />
       <VolumeButton is-plus @click="handleMainControl('volume-up')" />
-      <PowerButton @click="handleMainControl('power')" :is-pokedex-on="isPokedexOn" />
+      <PowerButton :is-pokedex-on="isPokedexOn" @click="handleMainControl('power')" />
     </div>
     <div class="d-pad">
       <DpadButton
         v-for="btn in abxyBtns"
         :key="`arrow-btn-${btn}`"
         :variant="btn"
-        :isActive="activeBtn === btn"
+        :is-active="activeBtn === btn"
         :class="`d-pad__${btn}`"
         @click="handleMainControl(btn)"
       />
@@ -29,15 +29,17 @@
 </template>
 
 <script setup lang="ts">
-import { useControlsStore } from '@/store/controls';
-import useControls from '@/composables/useControls';
-import { storeToRefs } from 'pinia';
+import DpadButton from '@/components/atoms/DpadButton.vue'
+import PowerButton from '@/components/atoms/PowerButton.vue'
+import VolumeButton from '@/components/atoms/VolumeButton.vue'
+import useControls from '@/composables/useControls.ts'
+import { useControlsStore } from '@/store/controls.ts'
 
-const arrowBtns = ['up', 'down', 'left', 'right'];
-const abxyBtns = ['a', 'b', 'x', 'y'];
-const { handleMainControl } = useControls();
-const controlsStore = useControlsStore();
-const { isPokedexOn, activeBtn } = storeToRefs(controlsStore);
+const arrowBtns = ['up', 'down', 'left', 'right'] as const
+const abxyBtns = ['a', 'b', 'x', 'y'] as const
+const { handleMainControl } = useControls()
+const controlsStore = useControlsStore()
+const { isPokedexOn, activeBtn } = storeToRefs(controlsStore)
 </script>
 
 <style scoped lang="scss">

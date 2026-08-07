@@ -1,7 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
-@import url('https://fonts.cdnfonts.com/css/pokemon-solid');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;600&display=swap');
+@font-face {
+  font-family: "Pokemon Solid";
+  font-style: normal;
+  font-weight: 400;
+  src: url("@/assets/fonts/pokemon-solid.woff") format("woff");
+}
 
-$main-font: 'Open Sans', sans-serif;
-$secondary-font: 'Montserrat', sans-serif;
-$pokemon-font: 'Pokemon Solid', sans-serif;
+$main-font: "Open Sans", sans-serif;
+$secondary-font: "Montserrat", sans-serif;
+$pokemon-font: "Pokemon Solid", sans-serif;

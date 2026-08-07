@@ -8,8 +8,10 @@
 </template>
 
 <script setup lang="ts">
-// correct type type
-defineProps<{ type: string }>();
+import FrostCard from '@/components/atoms/FrostCard.vue'
+import Icon from '@/components/atoms/Icon.vue'
+
+defineProps<{ type: string }>()
 </script>
 
 <style scoped lang="scss">
@@ -43,61 +45,16 @@ defineProps<{ type: string }>();
     #{$self}__icon {
       fill: $color-2;
     }
-    background: linear-gradient(40deg, rgba($color-1, 0.8) 30%, rgba(255, 255, 255, 0.3) 100%);
+    background: linear-gradient(
+      40deg,
+      rgba($color-1, 0.8) 30%,
+      rgba(255, 255, 255, 0.3) 100%
+    );
   }
-  &--fire {
-    @include gradient-bg($pokemon-fire, $pokemon-fire-light);
-  }
-  &--grass {
-    @include gradient-bg($pokemon-grass, $pokemon-grass-light);
-  }
-  &--water {
-    @include gradient-bg($pokemon-water, $pokemon-water-light);
-  }
-  &--normal {
-    @include gradient-bg($pokemon-normal, $pokemon-normal-light);
-  }
-  &--poison {
-    @include gradient-bg($pokemon-poison, $pokemon-poison-light);
-  }
-  &--bug {
-    @include gradient-bg($pokemon-bug, $pokemon-bug-light);
-  }
-  &--ground {
-    @include gradient-bg($pokemon-ground, $pokemon-ground-light);
-  }
-  &--fighting {
-    @include gradient-bg($pokemon-fighting, $pokemon-fighting-light);
-  }
-  &--rock {
-    @include gradient-bg($pokemon-rock, $pokemon-rock-light);
-  }
-  &--electric {
-    @include gradient-bg($pokemon-electric, $pokemon-electric-light);
-  }
-  &--fairy {
-    @include gradient-bg($pokemon-fairy, $pokemon-fairy-light);
-  }
-  &--psychic {
-    @include gradient-bg($pokemon-psychic, $pokemon-psychic-light);
-  }
-  &--ghost {
-    @include gradient-bg($pokemon-ghost, $pokemon-ghost-light);
-  }
-  &--ice {
-    @include gradient-bg($pokemon-ice, $pokemon-ice-light);
-  }
-  &--dragon {
-    @include gradient-bg($pokemon-dragon, $pokemon-dragon-light);
-  }
-  &--steel {
-    @include gradient-bg($pokemon-steel, $pokemon-steel-light);
-  }
-  &--flying {
-    @include gradient-bg($pokemon-flying, $pokemon-flying-light);
-  }
-  &--dark {
-    @include gradient-bg($pokemon-dark, $pokemon-dark-light);
+  @each $type, $colors in $pokemon-types {
+    &--#{$type} {
+      @include gradient-bg(nth($colors, 1), nth($colors, 2));
+    }
   }
 }
 </style>

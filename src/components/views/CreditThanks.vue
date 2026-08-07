@@ -25,8 +25,8 @@ const credits = [
   'Erik Hanchett for creating great short vue content that help me get started a few years ago',
   'Sarah Drasner for so many online lessons, super helpful packages and extensions for vue, css, performance',
   'My friend Klajdi for pushing me to release this and not let it die on my machine',
-  'Lastly and most important, my daughter Luna who inspires me everyday with her smile, wanting to leave the world a tad better for her. ❤️'
-];
+  'Lastly and most important, my daughter Luna who inspires me everyday with her smile, wanting to leave the world a tad better for her. ❤️',
+]
 </script>
 
 <style scoped lang="scss">
