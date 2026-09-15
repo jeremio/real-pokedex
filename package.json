@@ -2,7 +2,7 @@
   "name": "real-pokedex",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@12.4.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
